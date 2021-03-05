@@ -92,7 +92,9 @@ completeMatrix <- function(senMat, nPerms=50)
   }
   cat("\nDone\n")
 
-  return(hundIc50sImputeSort[,colnames(senMat)])
+  write.table(hundIc50sImputeSort[,colnames(senMat)], file='./complete_matrix_output.txt')
+
+  #return(hundIc50sImputeSort[,colnames(senMat)])
 }
 #'This function determines drug-gene associations for pre-clinical data.
 #'@param drugMat A matrix of drug sensitivity data. rownames() are pre-clinical samples, and colnames() are drug names.

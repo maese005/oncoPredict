@@ -17,7 +17,7 @@ knitr::opts_chunk$set(
 This script provides an example of how to download cnv (copy number variation) data from the GDC database for GBM (glioblastoma),
 how to apply the map_cnv() function to that data to map cnvs to genes, and how to test the drugs in your drug response dataset to each cnv to identify biomarkers that enrich for drug response.
 
-Download CNV data for your cancer of interest from GDC database. The cnv data will be exported to your working directory as cnv.txt 
+First, download CNV data for your cancer of interest from GDC database. The cnv data will be exported to your working directory as cnv.txt 
 ```{r}
 #if (!require("BiocManager"))
 #  install.packages("BiocManager")
@@ -39,7 +39,7 @@ gbm.nocnv<-GDCprepare(query.gbm.nocnv, save = TRUE, save.filename = "GBMnocnvhg1
 write.table(gbm.nocnv, file='./cnv.txt')
 ```
 
-Apply map_cnv() to map cnv data to genes. The mapped cnv data will be exported to your working directory as map.RData
+Second, apply map_cnv() to map cnv data to genes. The mapped cnv data will be exported to your working directory as map.RData
 The mapping is accomplished by intersecting the gene with the overlapping CNV level. If the gene isn't fully captured by the CNV, an NA will be assigned.
 ```{r}
 #BiocManager::install(c("TxDb.Hsapiens.UCSC.hg19.knownGene", "org.Hs.eg.db", #"GenomicFeatures"))
@@ -61,7 +61,7 @@ library(pRRopheticplus)
 map_cnv(theRootDir=theRootDir, Cnvs=Cnvs)
 ```
 
-Apply test() to test each cnv and each drug. The p-values and beta-values for each test will be exported to your working directory as CnvTestOutput_pVals.txt and CnvTestOutput_betas.txt
+Third, apply test() to test each cnv and each drug. The p-values and beta-values for each test will be exported to your working directory as CnvTestOutput_pVals.txt and CnvTestOutput_betas.txt
 ```{r}
 #Determine the parameters of the test() function...
 #Set the drug_prediction parameter.

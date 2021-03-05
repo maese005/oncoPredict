@@ -9,15 +9,15 @@ Authors@R:
            comment = c(ORCID = "0000-0002-3890-887X")),
     person(given = "Robert",
            family = "Gruener",
-           role = c("aut", "cre"),
+           role = 'ctb',
            email = "rgruener@uchicago.edu"),
     person(given = "Weijie",
            family = "Zhang",
-           role = c("aut", "cre"),
+           role = 'ctb',
            email = "zhan6385@umn.edu"),
     person(given = "Paul",
            family = "Geeleher",
-           role = c("aut", "cre"),
+           role = 'ctb',
            email = "paulgeeleher@gmail.com"))
 Description: This packages provides drug response prediction and biomarker discovery.
 License: GPL-2

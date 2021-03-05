@@ -1,0 +1,37 @@
+Package: pRRopheticplus
+Title: What the Package Does (One Line, Title Case)
+Version: 0.1.0
+Authors@R: 
+    person(given = "Danielle",
+           family = "Maeser",
+           role = c("aut", "cre"),
+           email = "maese005@umn.edu",
+           comment = c(ORCID = "0000-0002-3890-887X"))
+Description: This packages provides drug response prediction and biomarker discovery.
+License: GPL-2
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.1
+Suggests: 
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr
+Imports: 
+    sva,
+    preprocessCore, 
+    stringr,
+    org.Hs.eg.db,
+    biomaRt,
+    EnsDb.Hsapiens.v75,
+    downloader,
+    car,
+    genefilter,
+    tidyverse,
+    ensembldb,
+    readxl,
+    illuminaHumanv4.db, 
+    glmnet,
+    gdata, 
+    caret, 
+    biomaRt

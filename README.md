@@ -1,6 +1,6 @@
 # pRRophetic_plus
 
-An R package for drug response prediction and drug-gene association prediction. The prepared GDSC and CTRP matrices for the calcPhenotype() are here: https://drive.google.com/drive/folders/1qgLcsREeGJg_sCYZpTcso2JkWZ08Uu5r?usp=sharing
+An R package for drug response prediction and drug-gene association prediction. The prepared GDSC and CTRP matrices for the calcPhenotype() are here: [GDSC and CTRP Data](https://drive.google.com/drive/folders/1qgLcsREeGJg_sCYZpTcso2JkWZ08Uu5r?usp=sharing)
  *  For drug response prediction, use **calcPhenotype**. This code is based on the paper: [pRRophetic](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0107468)
  *  For pre-clinical biomarker discovery, use **GLDS**. This code is based on the paper: [GLDS](https://genomebiology.biomedcentral.com/articles/10.1186/s13059-016-1050-9)
  * For clinical biomarker discovery, use **IDWAS** or indicate **cc=TRUE** in calcPhenotype(). The IDWAS code is based on the paper: [IDWAS](https://pubmed.ncbi.nlm.nih.gov/28847918/)

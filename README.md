@@ -3,10 +3,7 @@
 An R package for drug response prediction and drug-gene association prediction.
 
 ## R <h2>
- * This directory contains all the functions included in this package. 
-
-## DESCRIPTION <h2>
- * This file contains the description documentation for this package. 
+ * This directory contains all the R functions included in this package. 
 
 ## vignettes <h2> 
   *  This directory contains vignettes which display detailed examples of the functionalities available in this package.
@@ -18,3 +15,12 @@ An R package for drug response prediction and drug-gene association prediction.
 
 ## vignetteData <h2>
   * This directory contains the data referenced in the examples provided in the vignette directory. 
+
+## man <h2>
+ * This directory contains .Rd (R documentation) files for each function. These files were automatically generated upon creation of the package. 
+
+## NAMESPACE <h2>
+ * This file lists the functions to be imported and exported from this package. 
+
+## DESCRIPTION <h2>
+ * This file contains the description documentation and metadata for this package. 

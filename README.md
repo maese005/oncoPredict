@@ -1,9 +1,11 @@
 # pRRophetic_plus
 
-An R package for drug response prediction and drug-gene association prediction. The prepared GDSC and CTRP matrices for the calcPhenotype() are here: [https://drive.google.com/drive/folders/1qgLcsREeGJg_sCYZpTcso2JkWZ08Uu5r?usp=sharing]
- *  For drug response prediction, use **calcPhenotype**. This code is based on the paper: pRRophetic: [An R Package for Prediction of Clinical Chemotherapeutic Response from Tumor Gene Expression Levels (plos.org)]
- *  For pre-clinical biomarker discovery, use **GLDS**. This code is based on the paper: [Cancer biomarker discovery is improved by accounting for variability in general levels of drug sensitivity in pre-clinical models | Genome Biology | Full Text (biomedcentral.com]
- * For clinical biomarker discovery, use **IDWAS** or indicate **cc=TRUE** in calcPhenotype(). The IDWAS code is based on the paper: [Discovering novel pharmacogenomic biomarkers by imputing drug response in cancer patients from large genomics studies (nih.gov)]
+An R package for drug response prediction and drug-gene association prediction. The prepared GDSC and CTRP matrices for the calcPhenotype() are here: https://drive.google.com/drive/folders/1qgLcsREeGJg_sCYZpTcso2JkWZ08Uu5r?usp=sharing
+ *  For drug response prediction, use **calcPhenotype**. This code is based on the paper: pRRophetic: An R Package for Prediction of Clinical Chemotherapeutic Response from Tumor Gene Expression Levels (plos.org)
+ *  For pre-clinical biomarker discovery, use **GLDS**. This code is based on the paper: Cancer biomarker discovery is improved by accounting for variability in general levels of drug sensitivity in pre-clinical models | Genome Biology | Full Text (biomedcentral.com
+ * For clinical biomarker discovery, use **IDWAS** or indicate **cc=TRUE** in calcPhenotype(). The IDWAS code is based on the paper: Discovering novel pharmacogenomic biomarkers by imputing drug response in cancer patients from large genomics studies (nih.gov)
+
+[ABC](http://example.com)
 
 ## R <h2>
  * This directory contains all the R functions included in this package. 

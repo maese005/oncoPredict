@@ -2,6 +2,12 @@
 
 An R package for drug response prediction and drug-gene association prediction.
 
+## R <h2>
+ * This directory contains all the functions included in this package. 
+
+## DESCRIPTION <h2>
+ * This file contains the description documentation for this package. 
+
 ## vignettes <h2> 
   *  This directory contains vignettes which display detailed examples of the functionalities available in this package.
   *  **IDWAS** This directory contains examples of IDWAS code application for clinical drug-gene association prediction. 
@@ -9,3 +15,6 @@ An R package for drug response prediction and drug-gene association prediction.
 
   * **GLDS** This directory contains examples of GLDS code application for pre-clinical drug-gene association prediction. 
       + **glds_GDSC.Rmd** Example of GLDS application to GDSC data. 
+
+## vignetteData <h2>
+  * This directory contains the data referenced in the examples provided in the vignette directory. 

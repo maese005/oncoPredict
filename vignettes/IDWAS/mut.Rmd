@@ -35,10 +35,15 @@ Apply test()
 drug_prediction<-as.data.frame(read.table('./DrugPredictions.txt', header=TRUE, row.names=1))
 #In this example, I had to replace the '.' in the names of these TCGA samples with '-' so that they are of the same form as samples in the mutation  data (you may not have to do this).
 colnames(drug_prediction)<-gsub(".", "-", colnames(drug_prediction), fixed=T)
+#Make sure the sample identifiers in the 'drug prediction' data are of similar form as the sample identifiers in the 'data' parameter.
+cols=colnames(drug_prediction)
+colnames(drug_prediction)<-substring(cols, 3, nchar(cols))
 
 #Set the data parameter.
 #Make sure this data is a data frame and that colnames() are samples.
 data<-as.data.frame(maf)
+samps<-data$Tumor_Sample_Barcode
+data$Tumor_Sample_Barcode<-substr(samps,1,nchar(samps)-12)
 
 #Determine the number of samples you want the CNVs to be amplified in. The default is 10.
 n=10
@@ -49,6 +54,7 @@ cnv=FALSE
 library(pRRopheticplus)
 
 #Apply test()
+#This function wil export the files MutationTestOutput_pVal.txt and #MutationTestOutput_betaVal.txt
+#The files contain p-values and beta-values (effect sizes) for each drug-gene association, respectively. 
 test(drug_prediction=drug_prediction, data=data, n=n, cnv=cnv)
 ```
-

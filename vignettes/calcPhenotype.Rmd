@@ -43,10 +43,10 @@ library('pls')
 #Set parameters for calcPhenotype()
 
 #Read in GDSC training expression data. rownames() are genes and colnames() are samples (cosmic ids).
-trainingExprData=as.matrix(read.table('C:/Users/danie/OneDrive/Desktop//train data/GDSC_Expression_Matrix.txt', header=TRUE, row.names=1))
+trainingExprData=as.matrix(read.table('./GDSC_Expression_Matrix.txt', header=TRUE, row.names=1))
 dim(trainingExprData) #17419 257 
 #Read in GDSC training response data. rownames() are samples (cosmic ids), colnames() are drugs.
-trainingPtype=as.matrix(read.table('C:/Users/danie/OneDrive/Desktop/train data/GDSC_Response_Matrix.txt', header=TRUE, row.names=1))
+trainingPtype=as.matrix(read.table('./GDSC_Response_Matrix.txt', header=TRUE, row.names=1))
 dim(trainingPtype) #257 198
 #R puts an X in front of each colname() of expression data...Fix that here so that cell line data is the same for both matrices.
 colnames(trainingExprData)<-rownames(trainingPtype)
@@ -56,17 +56,17 @@ trainingPtype<-exp(trainingPtype)
 #Or read in training data for CTRP (expression and response)
 #_______________________________________________________
 #Read in CTRP training expression data. rownames() are genes and colnames() are samples (cell lines).
-trainingExprData=as.matrix(read.table('C:/Users/danie/OneDrive/Desktop/train data/CTRP_Expression_Matrix.txt', header=TRUE, row.names=1))
+trainingExprData=as.matrix(read.table('./CTRP_Expression_Matrix.txt', header=TRUE, row.names=1))
 dim(trainingExprData) #54356 1076
 #Read in CTRP training response data. rownames() are samples (cell lines, cosmic ids), colnames() are drugs.
-trainingPtype=as.matrix(read.table('C:/Users/danie/OneDrive/Desktop/train data/CTRP_Response_Matrix.txt', header=TRUE, row.names=1))
+trainingPtype=as.matrix(read.table('./CTRP_Response_Matrix.txt', header=TRUE, row.names=1))
 dim(trainingPtype) #1076 545 
 
 #Or read in training data for PRISM (expression and response)
 #_______________________________________________________
-trainingExprData=readRDS("CCLE_rpkm.rds")
+trainingExprData=readRDS("./CCLE_rpkm.rds")
 dim(trainingExprData) #56202 1019
-trainingPtype=readRDS("prismDrugMat.rds")
+trainingPtype=readRDS("./prismDrugMat.rds")
 dim(t(trainingPtype)) #1419 481 
 overlap_cellLines<-intersect(colnames(trainingExprData), rownames(trainingPtype))
 trainingExprData=trainingExprData[,overlap_cellLines]
@@ -75,7 +75,7 @@ trainingPtype=trainingPtype[overlap_cellLines,]
 dim(trainingPtype) #473 1419
 
 #Read in testing data. rownames() are genes or ensemble ids, colnames() are samples.
-testExprData=as.matrix(read.table('prostate test data.txt', header=TRUE, row.names=1))
+testExprData=as.matrix(read.table('./prostate test data.txt', header=TRUE, row.names=1))
 
 #batchCorrect options: "eb" for ComBat, "qn" for quantiles normalization, "standardize", or "none"
 #"eb" is good to use when you use microarray training data to build models on microarray testing data; or, bulk RNAseq training data to build models on bulk RNAseq testing data.

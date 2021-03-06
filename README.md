@@ -13,6 +13,8 @@ An R package for drug response prediction and drug-gene association prediction.
   * **GLDS** This directory contains examples of GLDS code application for pre-clinical drug-gene association prediction. 
       + **glds_GDSC.Rmd** Example of GLDS application to GDSC data. 
 
+  * **calcPhenotype.Rmd** Example of calcPhenotype() application.
+
 ## vignetteData <h2>
   * This directory contains the data referenced in the examples provided in the vignette directory. 
 

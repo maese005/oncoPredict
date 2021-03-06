@@ -187,5 +187,5 @@ gldsCorrectedAssoc <- function(drugMat, drugRelationshipList, markerMat, numCorD
 
   outList <- list(pGlds=results_gldsPs, betaGlds=results_gldsBetas, pNaive=results_naivePs, betaNaive=results_naiveBetas)
   write.table(outList, file='./GLDS_output.txt')
-  return(outList)
+  #return(outList)
 }

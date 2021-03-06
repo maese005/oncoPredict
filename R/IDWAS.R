@@ -96,6 +96,21 @@ map_cnv<-function(theRootDir, Cnvs){
 #'@import TxDb.Hsapiens.UCSC.hg19.knownGene
 #'@import GenomicFeatures
 #'@export
+#'This function will test every drug against every CNV or somatic mutation for your cancer type.
+#'@param drug_prediction The drug prediction data. Must be a data frame. rownames() are samples, and colnames() are drugs. Make sure that the rownames() are of the same form as the sample names in your cnv or mutation data.
+#'e.g. if the rownames() are TCGA barcodes of the form TCGA-##-####-###, make sure your cnv/mutation data also uses samples in the form TCGA-##-####-###
+#'@param data The cnv or mutation data. Must be a data frame. If you wish to use cnv data, use the output from map_cnv().
+#'If you wish to use mutation data, use the method for downloading mutation data outlined in the vignette; if not, ensure your data file
+#'includes the following columns: 'Variant_Classification', 'Hugo_Symbol', 'Tumor_Sample_Barcode'.
+#'@param n The number of samples you want CNVs or mutations to be amplified in. The default is 10.
+#'@param cnv TRUE or FALSE. Indicate whether or not you would like to test cnv data. If TRUE, you will test cnv data. If FALSE, you will test mutation data.
+#'@keywords Test CNV or mutation data to genes.
+#'@import org.Hs.eg.db
+#'@import gdata
+#'@import parallel
+#'@import TxDb.Hsapiens.UCSC.hg19.knownGene
+#'@import GenomicFeatures
+#'@export
 test<-function(drug_prediction, data, n=10, cnv){
 
   #Check parameters.
@@ -104,7 +119,6 @@ test<-function(drug_prediction, data, n=10, cnv){
     stop("\nERROR: \"drug_prediction\" must be a data frame")
   if (class(data) != "data.frame")
     stop("\nERROR: \"data\" must be a data frame")
-
 
   #If TCGA is in my colnames() (as it would if you got cnv data from map_cnv() OR
   #if TCGA is in the column of your mutation data mutation$Tumor_Sample_Barcode, then you have TCGA samples
@@ -253,7 +267,7 @@ test<-function(drug_prediction, data, n=10, cnv){
 
       #Run the associations between all genes and drugs, for drugs with at least 50 mutations.
       #_______________________________________
-      preds01a_filt_ord <- preds01a[, inPredAndMutData] #The preds for the 01A samples we have both prediction and mutation data for.
+      preds01a_filt_ord <- as.matrix(preds01a[, inPredAndMutData]) #The preds for the 01A samples we have both prediction and mutation data for.
       mutMat_nodups_ordFilt <- mutMat_only01[, inPredAndMutData]
       commonMuts <- apply(mutMat_nodups_ordFilt, 1, sum)
       if (length(which(commonMuts >= n)) == 0){
@@ -303,10 +317,14 @@ test<-function(drug_prediction, data, n=10, cnv){
 
       output<-sort(unlist(pValList))[1:30]
 
-      write.table(output, file='./MutationTestOutput.txt')
+      output1<-sort(unlist(betaValList))[1:30]
+
+      write.table(output, file='./MutationTestOutput_pVal.txt')
+
+      write.table(output1, file='./MutationTestOutput_betaVal.txt')
 
       #Print the top associations
-      return(output)
+      #return(output)
     }
     #This code is for when you don't have TCGA barcoded samples (it's similar to above)
   } else {
@@ -359,9 +377,10 @@ test<-function(drug_prediction, data, n=10, cnv){
       pVals <- sapply(allCors_hasAmps, function(item)return(item[[1]]))
       betas <- sapply(allCors_hasAmps, function(item)return(item[[2]]))
 
-      write.table(pVals, file='./CnvTestOutput.txt')
+      write.table(pVals, file='./CnvTestOutput_pVals.txt')
+      write.table(betas, file='./CnvTestOutput_betas.txt')
 
-      return((pVals)) # its going to be difficult to get at causality in a systematic way here....
+      #return((pVals)) # its going to be difficult to get at causality in a systematic way here....
 
     } else {
 
@@ -465,7 +484,11 @@ test<-function(drug_prediction, data, n=10, cnv){
 
       output<-sort(unlist(pValList))[1:30]
 
-      write.table(output, file='./MutationTestOutput.txt')
+      output1<-sort(unlist(betaValList))[1:30]
+
+      write.table(output, file='./MutationTestOutput_pVal.txt')
+
+      write.table(output1, file='./MutationTestOutput_betaVal.txt')
 
       #Print the top associations
       #return(output)

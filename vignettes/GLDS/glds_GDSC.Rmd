@@ -47,4 +47,7 @@ drugRelationshipList<-read_excel('./drugRelationshipList.xlsx')
 markerMat<-read.table('./markerMat.txt', header=TRUE, row.names=1)
 
 gldsCorrectedAssoc(drugMat=drugMat, drugRelationshipList=drugRelationshipList, markerMat=markerMat, numCorDrugsExclude=100, minMuts=5, additionalCovariateMatrix=NULL)
+
+#View output.
+View(read.table('./GLDS_output.txt', header=TRUE, row.names=1))
 ```

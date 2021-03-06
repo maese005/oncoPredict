@@ -23,7 +23,6 @@ Apply completeMatrix()
 #  install.packages("BiocManager")
 #BiocManager::install('TCGAbiolinks')
 
-library(glmnet)
 library(pRRopheticplus)
 
 #Set parameters of completeMatrix()
@@ -34,4 +33,18 @@ senMat=read.table("./drug_matrix.txt", header=TRUE, row.names=1)
 #This function will create a file called complete_matrix_output.txt in your working directory.
 #This file is used as in put in the next function.
 completeMatrix(senMat=senMat, nPerms=nPerms)
+```
+
+Apply the GLDS function.
+```{r}
+
+#Set parameters. 
+drugMat<-read.table('./complete_matrix_output.txt', header=TRUE, row.names=1)
+
+library(readxl)
+drugRelationshipList<-read_excel('./drugRelationshipList.xlsx')
+
+markerMat<-read.table('./markerMat.txt', header=TRUE, row.names=1)
+
+gldsCorrectedAssoc(drugMat=drugMat, drugRelationshipList=drugRelationshipList, markerMat=markerMat, numCorDrugsExclude=100, minMuts=5, additionalCovariateMatrix=NULL)
 ```

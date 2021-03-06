@@ -1,0 +1,37 @@
+---
+title: "Control for GLDS (general levels of drug sensitivity) in pre-clinical samples for biomarker discovery"
+output: rmarkdown::html_document
+vignette: >
+  %\VignetteIndexEntry{Introduction}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+This script provides an example of how to control for GLDS in pre-clinical biomarker discovery. Controlling for GLDS is important because
+variability in GLDS is evient in cancer cell lines, and controlling for this variability improves cancer biomarker discovery.
+
+Apply completeMatrix()
+```{r}
+#if (!require("BiocManager"))
+#  install.packages("BiocManager")
+#BiocManager::install('TCGAbiolinks')
+
+library(glmnet)
+library(pRRopheticplus)
+
+#Set parameters of completeMatrix()
+nPerms=50
+senMat=read.table("./drug_matrix.txt", header=TRUE, row.names=1)
+
+#Apply completeMatrix()
+#This function will create a file called complete_matrix_output.txt in your working directory.
+#This file is used as in put in the next function.
+completeMatrix(senMat=senMat, nPerms=nPerms)
+```

@@ -45,7 +45,7 @@ The mapping is accomplished by intersecting the gene with the overlapping CNV le
 #BiocManager::install(c("TxDb.Hsapiens.UCSC.hg19.knownGene", "org.Hs.eg.db", #"GenomicFeatures"))
 #BiocManager::install('maftools')
 
-library(maftools)
+#library(maftools)
 library(TxDb.Hsapiens.UCSC.hg19.knownGene)
 library(org.Hs.eg.db)
 library(GenomicFeatures)

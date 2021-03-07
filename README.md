@@ -19,9 +19,6 @@ An R package for drug response prediction and drug-gene association prediction. 
 
   * **calcPhenotype.Rmd** Example of calcPhenotype() application.
 
-## vignetteData <h2>
-  * This directory contains the data referenced in the examples provided in the vignette directory. 
-
 ## man <h2>
  * This directory contains .Rd (R documentation) files for each function. These files were automatically generated upon creation of the package. 
 

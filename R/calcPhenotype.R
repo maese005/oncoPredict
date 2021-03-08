@@ -219,8 +219,6 @@ summarizeGenesByMean <- function(exprMat)
 #'@param printOutput Set to FALSE to supress output.
 #'@param pcr Indicates whether or not you'd like to use pcr for feature (gene) reduction. Options are 'TRUE' and 'FALSE'. If you indicate 'report_pc=TRUE' you need to also indicate 'pcr=TRUE'
 #'@param report_pc Indicates whether you want to output the training principal components. Options are 'TRUE' and 'FALSE'.
-#'@param tpm Indicates if you want to convert your training data to TPM, which is recommended if your testing data is measured in TPM. This would be useful, for example, if you wish to use CTRP training data, which is measured in RPKM.
-#'Options are 'TRUE' and 'FALSE'.
 #'@param cc Indicate if you want correlation coefficients for biomarker discovery.
 #'These are the correlations between a given gene of interest across all samples vs. a given drug response across samples.
 #'#'These correlations can be ranked to obtain a ranked correlation to determine highly correlated drug-gene associations.
@@ -247,8 +245,7 @@ calcPhenotype<-function (trainingExprData,
                          pcr=FALSE,
                          report_pc=FALSE,
                          rsq=FALSE,
-                         cc=FALSE,
-                         tpm=FALSE)
+                         cc=FALSE)
 {
 
   #Initiate empty lists for each data type you'd like to collect.
@@ -285,20 +282,6 @@ calcPhenotype<-function (trainingExprData,
   #_______________________________________________________________
   if ((nrow(trainingExprData) < minNumSamples) || (nrow(testExprData) < minNumSamples)) {
     stop(paste("\nThere are less than", minNumSamples, "samples in your test or training set. It is strongly recommended that you use larger numbers of samples in order to (a) correct for batch effects and (b) fit a reliable model. To supress this message, change the \"minNumSamples\" parameter to this function."))
-  }
-
-  #If the testing data is in TPM and the training data is in RPKM, convert training data (which is in RPKM) to TPM.
-  #_______________________________________________________________
-  if (tpm){
-    tpm_data <- matrix(0, nrow(trainingExprData), ncol=ncol(trainingExprData), dimnames=trainingExprData)
-    for (a in 1:ncol(tpm_data)){ #a represents each gene
-      for (b in 1:nrow(tpm_data)){ #b represents each sample
-        cell <-trainingExprData[b,a] #Patient b's expression of gene a.
-        col_sum <-sum(trainingExprData[,a]) #Sum of that gene's expression across all patients.
-        tpm_data[b,a] <- (cell/col_sum) * 10^6
-      }
-    }
-    trainingExprData <- tpm_data
   }
 
   #Get the homogenized data.

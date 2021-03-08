@@ -275,8 +275,8 @@ calcPhenotype<-function (trainingExprData,
       stop("\nERROR: pcr must be FALSE if cc is TRUE")
 
   #Make sure training samples are equivalent in both matrices.
-  if (colnames(trainingExprData) != rownames(trainingPtype))
-    stop("\nERROR: Samples in training matrices must be of equivalent")
+  if (any(colnames(trainingExprData) != rownames(trainingPtype)))
+    stop("\nERROR: Samples in training matrices must be of equivalent")  
 
   #Check if an adequate number of training and test samples have been supplied.
   #_______________________________________________________________

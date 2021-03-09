@@ -82,25 +82,6 @@ map_cnv<-function(theRootDir, Cnvs){
   
 }
 #'This function will test every drug against every CNV or somatic mutation for your cancer type.
-#'@param drug_prediction The drug prediction data. Must be a data frame. 
-#'If you have cnv data, make sure rownames() are samples, and colnames() are drugs. 
-#'If you have mutation data, make sure colnames() are samples and rownames() are drugs.
-#'Make sure sample names are of the same form as the sample names in your cnv or mutation data.
-#'e.g. if the rownames() are TCGA barcodes of the form TCGA-##-####-###, make sure your cnv/mutation data also uses samples in the form TCGA-##-####-###
-#'@param data The cnv or mutation data. Must be a data frame. colnames() are samples.
-#'If you wish to use cnv data, use the output from map_cnv(), transpose it so that colnames() are samples. 
-#'If you wish to use mutation data, use the method for downloading mutation data outlined in the vignette, and
-#'make sure the TCGA barcodes use '-' instead of '.'; if not, ensure your data file includes the following columns: 'Variant_Classification', 'Hugo_Symbol', 'Tumor_Sample_Barcode'. If
-#'@param n The number of samples you want CNVs or mutations to be amplified in. The default is 10.
-#'@param cnv TRUE or FALSE. Indicate whether or not you would like to test cnv data. If TRUE, you will test cnv data. If FALSE, you will test mutation data.
-#'@keywords Test CNV or mutation data to genes.
-#'@import org.Hs.eg.db
-#'@import gdata
-#'@import parallel
-#'@import TxDb.Hsapiens.UCSC.hg19.knownGene
-#'@import GenomicFeatures
-#'@export
-#'This function will test every drug against every CNV or somatic mutation for your cancer type.
 #'@param drug_prediction The drug prediction data. Must be a data frame.
 #'If you have cnv data, make sure rownames() are samples, and colnames() are drugs.
 #'If you have mutation data, make sure colnames() are samples and rownames() are drugs.

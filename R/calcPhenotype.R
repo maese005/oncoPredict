@@ -31,12 +31,12 @@ homogenizeData<-function (testExprMat, trainExprMat, batchCorrect = "eb", select
   if (!(batchCorrect %in% c("eb", "qn", "none",
                             "rank", "rank_then_eb", "standardize")))
     stop("\"batchCorrect\" must be one of \"eb\", \"qn\", \"rank\", \"rank_then_eb\", \"standardize\" or \"none\"")
-
+  
   #Check if both row and column names have been specified.
   if (is.null(rownames(trainExprMat)) || is.null(rownames(testExprMat))) {
     stop("ERROR: Gene identifiers must be specified as \"rownames()\" on both training and test expression matrices. Both matices must have the same type of gene identifiers.")
   }
-
+  
   #Check that some of the row names overlap between both datasets (print an error if none overlap)
   if (sum(rownames(trainExprMat) %in% rownames(testExprMat)) == 0) {
     stop("ERROR: The rownames() of the supplied expression matrices do not match. Note that these are case-sensitive.")
@@ -45,7 +45,7 @@ homogenizeData<-function (testExprMat, trainExprMat, batchCorrect = "eb", select
     if (printOutput)
       cat(paste("\n", sum(rownames(trainExprMat) %in% rownames(testExprMat)), " gene identifiers overlap between the supplied expression matrices... \n", paste = ""))
   }
-
+  
   #If there are duplicate gene names, give the option of removing them or summarizing them by their mean.
   if ((sum(duplicated(rownames(trainExprMat))) > 0) || sum(sum(duplicated(rownames(testExprMat))) > 0)) {
     if (selection == -1) {
@@ -58,9 +58,9 @@ homogenizeData<-function (testExprMat, trainExprMat, batchCorrect = "eb", select
       selection <- readline("Selection: ")
       selection <- ifelse(grepl("[^1-3.]", selection), -1, as.numeric(selection))
     }
-
+    
     cat("\n")
-
+    
     if (selection == 1) #Summarize duplicates by their mean.
     {
       if ((sum(duplicated(rownames(trainExprMat))) > 0)) {
@@ -85,13 +85,13 @@ homogenizeData<-function (testExprMat, trainExprMat, batchCorrect = "eb", select
       stop("Exectution Aborted!")
     }
   }
-
+  
   #Subset and order gene ids on the expression matrices.
   commonGenesIds <- rownames(trainExprMat)[rownames(trainExprMat) %in%
                                              rownames(testExprMat)]
   trainExprMat <- trainExprMat[commonGenesIds, ]
   testExprMat <- testExprMat[commonGenesIds, ]
-
+  
   #Subset and order the 2 expression matrices.
   if (batchCorrect == "eb") {
     #Subset to common genes and batch correct using ComBat.
@@ -100,14 +100,19 @@ homogenizeData<-function (testExprMat, trainExprMat, batchCorrect = "eb", select
     rownames(mod) <- colnames(dataMat)
     whichbatch <- as.factor(c(rep("train", ncol(trainExprMat)),
                               rep("test", ncol(testExprMat))))
-
+    
     # Added
     # Filter out genes with low variances to make sure comBat run correctly
     dataMat <- cbind(trainExprMat, testExprMat)
     gene_vars = apply(dataMat, 1, var)
-    dataMat = dataMat[-which(gene_vars <= 1e-3),]
+    genes<-as.vector(gene_vars)
+    
+    if (length(which(genes <= 1e-3) != 0)){ #If some genes have low variances (if the variance is not 0), remove them.
+      dataMat = dataMat[-(which(genes <= 1e-3)),]
+    }
+    
     # End added
-
+    
     combatout <- ComBat(dataMat, whichbatch, mod = mod)
     return(list(train = combatout[, whichbatch == "train"],
                 test = combatout[, whichbatch == "test"], selection = selection))
@@ -246,7 +251,7 @@ calcPhenotype<-function (trainingExprData,
                          report_pc=FALSE,
                          rsq=FALSE,
                          cc=FALSE)
-{
+{ 
 
   #Initiate empty lists for each data type you'd like to collect.
   #_______________________________________________________________
@@ -286,7 +291,7 @@ calcPhenotype<-function (trainingExprData,
 
   #Get the homogenized data.
   #_______________________________________________________________
-  homData <- homogenizeData(testExprData, trainingExprData, batchCorrect, selection, printOutput)
+  homData <- homogenizeData(testExprMat=testExprData, trainExprMat=trainingExprData, batchCorrect, selection, printOutput)
 
   #Remove low varying genes.
   #_______________________________________________________________

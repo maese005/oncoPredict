@@ -88,7 +88,7 @@ map_cnv<-function(theRootDir, Cnvs){
 #'Make sure sample names are of the same form as the sample names in your cnv or mutation data.
 #'e.g. if the rownames() are TCGA barcodes of the form TCGA-##-####-###, make sure your cnv/mutation data also uses samples in the form TCGA-##-####-###
 #'@param data The cnv or mutation data. Must be a data frame. colnames() are samples.
-#'If you wish to use cnv data, use the output from map_cnv(), transpose it so that colnames() are samples.
+#'If you wish to use cnv data, use the output from map_cnv(), transpose it so that colnames() are samples. Or use data of similar form.
 #'If you wish to use mutation data, use the method for downloading mutation data outlined in the vignette, and
 #'make sure the TCGA barcodes use '-' instead of '.'; if not, ensure your data file includes the following columns: 'Variant_Classification', 'Hugo_Symbol', 'Tumor_Sample_Barcode'. If
 #'@param n The number of samples you want CNVs or mutations to be amplified in. The default is 10.

@@ -40,104 +40,101 @@ library('glmnet')
 library('gdata')
 library('pls') 
 
-#Set parameters for calcPhenotype()
+#Determine parameters for calcPhenotype() function.
+#__________________________________________________________________________________________________________________________________
 
-#Read in GDSC training expression data. rownames() are genes and colnames() are samples (cosmic ids).
-trainingExprData=as.matrix(read.table('./GDSC_Expression_Matrix.txt', header=TRUE, row.names=1))
-dim(trainingExprData) #17419 257 
-#Read in GDSC training response data. rownames() are samples (cosmic ids), colnames() are drugs.
-trainingPtype=as.matrix(read.table('./GDSC_Response_Matrix.txt', header=TRUE, row.names=1))
-dim(trainingPtype) #257 198
-#R puts an X in front of each colname() of expression data...Fix that here so that cell line data is the same for both matrices.
-colnames(trainingExprData)<-rownames(trainingPtype)
+#_______________________________________________________
+#Read training data for GDSC (expression and response)
+#_______________________________________________________
+
+#GDSC1 Data
+#Read GDSC training expression data. rownames() are genes and colnames() are samples (cell lines/cosmic ids).
+trainingExprData=(readRDS("GDSC1_Expr.rds"))
+dim(trainingExprData) #17419 958 
+#Read GDSC1 response data. rownames() are samples (cell lines, cosmic ids), colnames() are drugs.
+trainingPtype = (readRDS("GDSC1_Res.rds"))
+dim(trainingPtype) #958 367 For GDSC1
+
+#GDSC2 Data
+#Read GDSC training expression data. rownames() are genes and colnames() are samples.
+trainingExprData=readRDS(file='GDSC2_Expr.rds')
+dim(trainingExprData) #17419 805
+#Read GDSC2 response data. rownames() are samples, colnames() are drugs. 
+trainingPtype = readRDS(file = "GDSC2_Res.rds")
+dim(trainingPtype) #805 198
+
 #IMPORTANT note: here I do e^IC50 since the IC50s are actual ln values/log transformed already, and the calcPhenotype function Paul has will do a power transformation (I assumed it would be better to not have both transformations)
 trainingPtype<-exp(trainingPtype) 
 
-#Or read in training data for CTRP (expression and response)
+#Or read training data for CTRP (expression and response)
 #_______________________________________________________
-#Read in CTRP training expression data. rownames() are genes and colnames() are samples (cell lines).
-trainingExprData=as.matrix(read.table('./CTRP_Expression_Matrix.txt', header=TRUE, row.names=1))
-dim(trainingExprData) #54356 1076
-#Read in CTRP training response data. rownames() are samples (cell lines, cosmic ids), colnames() are drugs.
-trainingPtype=as.matrix(read.table('./CTRP_Response_Matrix.txt', header=TRUE, row.names=1))
-dim(trainingPtype) #1076 545 
-
-#Or read in training data for PRISM (expression and response)
+#Read CTRP training expression data. rownames() are genes and colnames() are samples (cell lines/cosmic ids).
+trainingExprData = readRDS(file = "CTRP2_Expr.rds")
+dim(trainingExprData) #51847 829
+#Read CTRP training response data. rownames() are samples (cell lines, cosmic ids), colnames() are drugs.
+trainingPtype = readRDS(file = "CTRP2_Res.rds")
+dim(trainingPtype) #829 545 
 #_______________________________________________________
-trainingExprData=readRDS("./CCLE_rpkm.rds")
-dim(trainingExprData) #56202 1019
-trainingPtype=readRDS("./prismDrugMat.rds")
-dim(t(trainingPtype)) #1419 481 
-overlap_cellLines<-intersect(colnames(trainingExprData), rownames(trainingPtype))
-trainingExprData=trainingExprData[,overlap_cellLines]
-dim(trainingExprData) #56202 473
-trainingPtype=trainingPtype[overlap_cellLines,]
-dim(trainingPtype) #473 1419
 
-#Read in testing data. rownames() are genes or ensemble ids, colnames() are samples.
+#Test data. 
+#_______________________________________________________
+#Read testing data as a matrix with rownames() as genes and colnames() as samples.
 testExprData=as.matrix(read.table('./prostate test data.txt', header=TRUE, row.names=1))
+dim(testExprData) #20530 550
 
+#Additional parameters. 
+#_______________________________________________________
 #batchCorrect options: "eb" for ComBat, "qn" for quantiles normalization, "standardize", or "none"
-#"eb" is good to use when you use microarray training data to build models on microarray testing data; or, bulk RNAseq training data to build models on bulk RNAseq testing data.
-#"standardize is good to use when you use microarray training data to build models on RNA-seq testing data. 
+#"eb" is good to use when you use microarray training data to build models on microarray testing data.
+#"standardize is good to use when you use microarray training data to build models on RNA-seq testing data (this is what Paul used in the 2017 IDWAS paper that used GDSC microarray to impute in TCGA RNA-Seq data, see methods section of that paper for rationale)
 batchCorrect<-"eb"
 
-#Determine whether or not to power transform the phenotype data. 
-#Default is TRUE. 
+#Determine whether or not to power transform the phenotype data.
+#Default is TRUE.
 powerTransformPhenotype<-TRUE
 
-#Determine percentage of low varying genes to remove. 
-#Default is 0.2  
+#Determine percentage of low varying genes to remove.
+#Default is 0.2 (seemingly arbitrary).
 removeLowVaryingGenes<-0.2
 
 #Determine method to remove low varying genes.
 #Options are 'homogenizeData' and 'rawData'
-#homogenizeData is likely better if there is ComBat batch correction, else, rawData.
+#homogenizeData is likely better if there is ComBat batch correction, raw data was used in the 2017 IDWAS paper that used GDSC microarray to impute in TCGA RNA-Seq data.
 removeLowVaringGenesFrom<-"homogenizeData"
 
-#Determine the minimum number of training samples required to train on. 
-#Default is 10.
+#Determine the minimum number of training samples required to train on.
+#Note: this shouldn't be an issue if you train using GDSC or CTRP because there are many samples in both training datasets.
+#10, I believe, is arbitrary and testing could be done to get a better number.
 minNumSamples=10
 
-#Determine how you would like to deal with duplicate gene IDs. 
-#Sometimes based on how you clean the data, there shouldn't be any duplicates to deal with. 
+#Determine how you would like to deal with duplicate gene IDs.
+#Sometimes based on how you clean the data, there shouldn't be any duplicates to deal with.
 #Options are -1 for ask user, 1 for summarize by mean, and 2 for disregard duplicates
-#Default is 1. 
 selection<- 1
 
 #Determine if you'd like to print outputs.
-#Default is TRUE. 
+#Default is TRUE.
 printOutput=TRUE
 
 #Indicate whether or not you'd like to use PCA for feature/gene reduction. Options are 'TRUE' and 'FALSE'.
 #Note: If you indicate 'report_pca=TRUE' you need to also indicate 'pca=TRUE'
-#Default is FALSE.
-pca=FALSE
+pcr=FALSE
 
-#Indicate whether or not you'd like to output the principal components for each drug/model. Options are 'TRUE' and 'FALSE'.
-#Default is FALSE.
-report_pca=FALSE
+#Indicate whether you want to output the principal components. Options are 'TRUE' and 'FALSE'.
+report_pc=FALSE
 
-#Indicate if you want to convert your training data to TPM, which is recommended if your testing data is measured in TPM. 
-#This would be useful, for example, if you wish to use CTRP training data, which is measured in RPKM.
-#Options are 'TRUE' and 'FALSE'.
-#Default is FALSE.
-tpm=FALSE
-
-#Indicate whether or not you'd like to obtain correlation coefficients for biomarker discovery. 
-#These are the correlations between a given gene of interest across all samples vs. a given drug response across samples.
-#Once obtained, these correlations can be ranked to obtain a ranked correlation to determine highly correlated drug-gene associations.
-#Default is FALSE.
+#Indicate if you want correlation coefficients for biomarker discovery. These are the correlations between a given gene of interest across all samples vs. a given drug response across samples.
+#These correlations can be ranked to obtain a ranked correlation to determine highly correlated drug-gene associations.
 cc=FALSE
 
-#Indicate whether or not you'd like to output the R^2 values for the data you train on from true and predicted values. 
+#Indicate whether or not you want to output the R^2 values for the data you train on from true and predicted values.
 #These values represent the percentage in which the optimal model accounts for the variance in the training data.
 #Options are 'TRUE' and 'FALSE'.
-#Default is FALSE.
 rsq=FALSE
 
-#Run the calcPhenotype() function using the parameters you specified above. 
-#Outputs will be stored in your working directory. 
+#__________________________________________________________________________________________________________________________________
+#Run the calcPhenotype() function using the parameters you specified above.
+#__________________________________________________________________________________________________________________________________
 calcPhenotype(trainingExprData=trainingExprData,
               trainingPtype=trainingPtype,
               testExprData=testExprData,
@@ -148,11 +145,10 @@ calcPhenotype(trainingExprData=trainingExprData,
               selection=selection,
               printOutput=printOutput,
               removeLowVaringGenesFrom=removeLowVaringGenesFrom,
-              pca=pca, 
-              report_pca=report_pca,
+              pcr=pcr,
+              report_pc=report_pc,
               rsq=rsq,
-              cc=cc,
-              tpm=tpm)
+              cc=cc)
 
 #If pcr is performed, you can view a drug's first two principal components using the code below. 
 View(load('./calcPhenotype_Output/Vinblastine_1004.RData'))

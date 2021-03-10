@@ -260,15 +260,14 @@ calcPhenotype<-function (trainingExprData,
   cors<-list() #Collects correlation coefficient for each gene across all samples vs. each drug across all samples.
 
   drugs<-colnames(trainingPtype) #Store all the possible drugs in a vector.
-  #drugs=drugs[387]
 
   #Check the supplied data and parameters.
   #_______________________________________________________________
-  if (class(testExprData) != "matrix")
+  if (class(testExprData)[1] != "matrix")
     stop("\nERROR: \"testExprData\" must be a matrix.")
-  if (class(trainingExprData) != "matrix")
+  if (class(trainingExprData)[1] != "matrix")
     stop("\nERROR: \"trainingExprData\" must be a matrix.")
-  if (class(trainingPtype) != "matrix")
+  if (class(trainingPtype)[1] != "matrix")
     stop("\nERROR: \"trainingPtype\" must be a matrix.")
 
   if (report_pc)

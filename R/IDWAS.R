@@ -1,13 +1,12 @@
 #'This function maps cnv data to genes.
 #'The output of this function is a .RData file called map.RData; this file contains theCnvQuantVecList_mat (rows are genes, and columns are samples) and tumorSamps (indicates which samples are primary tumor samples, 01A).
-#'@param theRootDir The directory/location in which you downloaded the data to.The output of this function will be saved to this directory.
 #'@param Cnvs The output obtained from the download() function (the cnv data); a table with colnames() Sample (named using the TCGA patient barcode), Chromosome, Start, End, Num_Probes, and Segment_Mean.
 #'@keywords Map CNV data to genes
 #'@return A .RData file called, map.RData, which stores two objects: theCnvQuantVecList_mat (rows are genes, columns are samples), tumorSamps (indicates which samples are primary tumor/01A).
 #'@import org.Hs.eg.db
 #'@import GenomicFeatures
 #'@export
-map_cnv<-function(theRootDir, Cnvs){
+map_cnv<-function(Cnvs){
   
   #Check colnames() of the cnv data.
   #This is important because depending on what method you use to obtain the cnv data, colnames() might slightly differ (aka Segment.Mean and not Segment_Mean).
@@ -78,7 +77,7 @@ map_cnv<-function(theRootDir, Cnvs){
   theCnvQuantVecList_mat <- do.call(rbind, theCnvQuantVecList)
   siteVec <- sapply(strsplit(names(CnvsList), "-"), function(l)return(l[4]))
   tumorSamps <- which(siteVec == "01A")
-  save(theCnvQuantVecList_mat, tumorSamps, file=paste(theRootDir, '/', "map.RData", sep="")) # Save these RData files for use by other scripts.
+  save(theCnvQuantVecList_mat, tumorSamps, file="./map.RData") # Save these RData files for use by other scripts.
   
 }
 #'This function will test every drug against every CNV or somatic mutation for your cancer type.

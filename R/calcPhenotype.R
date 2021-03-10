@@ -333,7 +333,7 @@ calcPhenotype<-function (trainingExprData,
 
     samps<-rownames(trainingPtype)[NonNAindex]
     #Index for the drug of interest.
-    #Cell lines you will use for training because you have expression and response data for it,
+    #Cell lines you will use for training because you have expression and response data for it.
 
     if (length(samps) == 1){
       drugs = drugs[-a]

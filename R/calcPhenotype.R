@@ -411,8 +411,12 @@ calcPhenotype<-function (trainingExprData,
               pcr_pred<-predict(pcr_model, test_x, ncomp=2)
 
               if (printOutput) cat("\nCalculating R^2...")
-              sst<-sum((pcr_pred - mean(test_y))^2) #Compute the sum of squares total.
-              sse<-sum((pcr_pred - test_y))^2 #Compute the sum of squares error.
+              #sst<-sum((pcr_pred - mean(test_y))^2) #Compute the sum of squares total.
+              #sse<-sum((pcr_pred - test_y))^2 #Compute the sum of squares error.
+              
+              sst<-sum((test_y - mean(test_y))^2) #Compute the sum of squares total.
+              sse<-sum((pcr_pred - test_y)^2) #Compute the sum of squares error.
+              
               rsq_value<-1 - sse/sst #Compute the rsq value.
             }
           }
@@ -476,8 +480,12 @@ calcPhenotype<-function (trainingExprData,
               pred<-predict(rrModel, newx=test_x, s=cv_fit$lambda.min)
 
               if(printOutput) cat("\nCalculating R^2...")
-              sst<-sum((pred - mean(test_y))^2) #Compute the sum of squares total.
-              sse<-sum((pred - test_y))^2 #Compute the sum of squares error.
+              #sst<-sum((pred - mean(test_y))^2) #Compute the sum of squares total.
+              #sse<-sum((pred - test_y))^2 #Compute the sum of squares error.
+              
+              sst<-sum((test_y - mean(test_y))^2) #Compute the sum of squares total.
+              sse<-sum((pred - test_y)^2) #Compute the sum of squares error.
+              
               rsq_value<-1 - sse/sst #Compute the rsq value.
             }
           }

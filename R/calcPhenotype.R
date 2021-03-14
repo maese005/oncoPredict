@@ -235,6 +235,7 @@ summarizeGenesByMean <- function(exprMat)
 #'@import sva
 #'@import glmnet
 #'@import car
+#'@import base
 #'@keywords predict drug sensitivity and phenotype
 #'@export
 calcPhenotype<-function (trainingExprData,
@@ -325,7 +326,7 @@ calcPhenotype<-function (trainingExprData,
   #Predict for each drug.
   #_______________________________________________________________
   for(a in 1:length(drugs)){ #For each drug...
-
+    
     #Set up the trainingPtype and trainingExprData. Only use cell lines for which you have response data for.
     #_______________________________________________________________
     trainingPtype2<-trainingPtype[,a] #Obtain the response data for the compound of interest. Must be a numeric vector.
@@ -373,14 +374,18 @@ calcPhenotype<-function (trainingExprData,
 
         #Check to make sure you have enough training samples for the drug's model.
         #_______________________________________________________________
-        pcrmodel<-try(pcr(train_y~., data=data, validation='CV', ncomp=2))
+        pcr_model<-try(pcr(train_y~., data=data, validation='CV'))
+        
+        v=cumsum(explvar(pcr_model)) #A vector of all the pcs and their percent of variance. 
+        ncomp=min(which(v > 80)) #Identify which pcs will represent 80% variance. 
+        
         if (class(pcrmodel) == 'try-error'){
           drugs = drugs[-a]
           cat(paste("\n", drugs[a], "is skipped due to insufficient cell lines to fit the model."))
           next
         } else{
           #if(printOutput) cat("\nCalculating predicted phenotype...")
-          preds<-predict(pcr_model, t(homData$test)[,keepRows], ncomp=2)
+          preds<-predict(pcr_model, t(homData$test)[,keepRows], ncomp=ncomp)
 
           #You can compute an R^2 value for the data you train on from true and predicted values.
           #The rsq value represents the percentage in which the optimal model accounts for the variance in the training data.
@@ -407,9 +412,13 @@ calcPhenotype<-function (trainingExprData,
               test_x<-test_x[,-ncol]
 
               data<-as.data.frame(cbind(train_x, train_y))
-              pcr_model<-pcr(train_y~., data=data, validation='CV', ncomp=2) #Set validation argument to CV.
-              pcr_pred<-predict(pcr_model, test_x, ncomp=2)
-
+              pcr_model<-pcr(train_y~., data=data, validation='CV') #Set validation argument to CV.
+              
+              v=cumsum(explvar(pcr_model)) #A vector of all the pcs and their percent of variance. 
+              ncomp=min(which(v > 80)) #Identify which pcs will represent 80% variance. 
+              
+              pcr_pred<-predict(pcr_model, test_x, ncomp=ncomp)
+              
               if (printOutput) cat("\nCalculating R^2...")
               #sst<-sum((pcr_pred - mean(test_y))^2) #Compute the sum of squares total.
               #sse<-sum((pcr_pred - test_y))^2 #Compute the sum of squares error.

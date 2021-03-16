@@ -235,7 +235,7 @@ summarizeGenesByMean <- function(exprMat)
 #'@return .txt files will be saved into your working directory. Depending on the parameter specified, the .txt file outputs of this function can include the estimated phenotype/sensitivity predictions,
 #'the R^2 data, and the correlation coefficients. Principal components are stored as .RData files for each drug in your drug dataset.
 #'@import sva
-#'@import glmnet
+#'@import ridge
 #'@import car
 #'@import base
 #'@keywords predict drug sensitivity and phenotype

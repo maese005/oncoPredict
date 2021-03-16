@@ -283,8 +283,15 @@ calcPhenotype<-function (trainingExprData,
       stop("\nERROR: pcr must be FALSE if cc is TRUE")
 
   #Make sure training samples are equivalent in both matrices.
-  if (any(colnames(trainingExprData) != rownames(trainingPtype)))
-    stop("\nERROR: Samples in training matrices must be of equivalent")  
+  if (!any(colnames(trainingExprData) %in% rownames(trainingPtype)))
+    stop("\nERROR: No Cell Lines Found in Common: Sample names must be consistent in training matrices") 
+  
+  #Subset and order the training Expr and trainingPtype to the cell lines in common (and order them)
+  
+  commonCellLines<-colnames(trainingExprData)[colnames(trainingExprData) %in% rownames(trainingPtype)]
+  
+  trainingExprData <- trainingExprData[,commonCellLines]
+  trainingPtype <- trainingPtype[commonCellLines,]
 
   #Check if an adequate number of training and test samples have been supplied.
   #_______________________________________________________________
@@ -595,7 +602,7 @@ calcPhenotype<-function (trainingExprData,
   colnames(DrugPredictions_mat)<-drugs
   rownames(DrugPredictions_mat)<-colnames(testExprData)
   dir.create("./calcPhenotype_Output")
-  write.table(DrugPredictions_mat, file="./calcPhenotype_Output/DrugPredictions.txt")
+  write.csv(DrugPredictions_mat, file="./calcPhenotype_Output/DrugPredictions.csv", row.names = TRUE, col.names = TRUE)
 
   #If rsq=TRUE, save R^2 data.
   if(rsq){

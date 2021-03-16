@@ -36,7 +36,7 @@ library('tidyverse')
 library('ensembldb')
 library('readxl')
 library('illuminaHumanv4.db')
-library('glmnet')
+library('ridge')
 library('gdata')
 library('pls') 
 

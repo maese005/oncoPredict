@@ -530,6 +530,27 @@ calcPhenotype<-function (trainingExprData,
                 ncol<-dim(test_x)[2]
                 test_y<-test_x[,ncol]
                 test_x<-test_x[,-ncol]
+                
+                #Remove genes that you have no transcriptome data for (aka columns are filled with 0's).
+                #If you don't, it causes problems in linearRidge().
+                #Make sure you remove those same genes from the test data...want to make sure the genes are the same in both train_x and test_x
+                x<-as.vector(colSums(train_x))
+                bad<-which(x == 0) #Column/genes indices that are filled with only 0's.
+                if (length(bad) != 0){
+                  train_x<-train_x[,-bad]
+                  test_x<-data.frame(test_x[,-bad])
+                }
+                
+                #Remove genes with 0 variance. If you don't, this will also cause problems in linearRidge(). 
+                variance<-c()
+                for (i in 1:ncol(train_x)){
+                  variance[i]<-var(as.vector(train_x[,i]))
+                }
+                bi<-which(variance %in% 0) #Bad index...gene has 0 variance. 
+                if (length(bi) != 0){ #If there are actually bad indices/genes that had 0 variance across all samples, remove them.
+                  train_x<-train_x[,-bi]
+                  test_x<-data.frame(test_x[,-bi])
+                }
               
                 trainFrame<-data.frame(Resp=train_y, train_x)
                 rrModel<-linearRidge(Resp ~., data=trainFrame)

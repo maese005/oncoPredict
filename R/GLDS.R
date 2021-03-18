@@ -183,7 +183,5 @@ gldsCorrectedAssoc <- function(drugMat, drugRelationshipList, markerMat, numCorD
   
   outList <- list(pGlds=results_gldsPs, betaGlds=results_gldsBetas, pNaive=results_naivePs, betaNaive=results_naiveBetas)
   
-  write.csv(outList, file="./GLDS_Output.csv", row.names = TRUE, col.names = TRUE)
-
   return(outList)  
 }

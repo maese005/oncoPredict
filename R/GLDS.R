@@ -111,29 +111,27 @@ gldsCorrectedAssoc <- function(drugMat, drugRelationshipList, markerMat, numCorD
   results_gldsPs <- list()
   results_gldsBetas <- list()
   results_naivePs <- list()
-  results_naiveBetas <- list()
+  results_naiveBetas <- list()  
   numDrugs <- ncol(drugMat)
   pairCor <- cor(drugMat, method="spearman")
-  comNames <- colnames(markerMat)[colnames(markerMat) %in% rownames(drugMat)] #Cell lines for which we have both mutation and drug data....
-
-  if(!is.null(additionalCovariateMatrix)) #If additional co variate matrix was provided, then also subset to those samples.
+  comNames <- colnames(markerMat)[colnames(markerMat) %in% rownames(drugMat)] # cell lines for which we have both mutation and drug data....
+  
+  if(!is.null(additionalCovariateMatrix)) # if additional co variate matrix was provided, then also subset to those samples
   {
     comNames <- comNames[comNames %in% rownames(additionalCovariateMatrix)]
   }
-
-  pb <- txtProgressBar(min = 0, max = ncol(drugMat), style = 3) # Create progress bar
+  
+  pb <- txtProgressBar(min = 0, max = ncol(drugMat), style = 3) # create progress bar
   for(i in 1:ncol(drugMat))
   {
-
-    #Estimate the GLDS as the first 10 PCs of this set of negative controls/non-related sets of drugs.
-    #These PCs are included as covariates in the linear model used to perform the subsequent corrected cancer gene mutation to drug IC50 association analysis.
+    # Calculate 10 PCs on non-related sets of drugs....
     negControlDrugs <- colnames(drugMat)[!as.logical(drugRelationshipList[[i]])]
-    pairwiseCorNear <- names(rank(abs(pairCor[, colnames(drugMat)[i]]))[(numDrugs-numCorDrugsExclude):numDrugs]) #Also remove very correlated drugs. Number defined by "numCorDrugsExclude".
-    negControlDrugs <- setdiff(negControlDrugs, pairwiseCorNear) #Remove very highly correlated drugs from "negative controls.
+    pairwiseCorNear <- names(rank(abs(pairCor[, colnames(drugMat)[i]]))[(numDrugs-numCorDrugsExclude):numDrugs]) # NB also remove very correlated drugs. Number defined by "numCorDrugsExclude".
+    negControlDrugs <- setdiff(negControlDrugs, pairwiseCorNear) # remove very highly correlated drugs from "negative controls"
     controlPCsAll <- prcomp(drugMat[, negControlDrugs])$x
     controlPCsAllCom <- controlPCsAll[comNames, ]
-
-    #Calculate the P-values and beta values for each marker for this drug, controlling for GLDS and not controlling for GLDS.
+    
+    # Calculate the P-values and beta values for each marker for this drug, controlling for GLDS and not controlling for GLDS
     results_gldsPs[[i]] <- numeric()
     results_gldsPs[[i]] <- rep(NA, nrow(markerMat))
     results_gldsBetas[[i]] <- numeric()
@@ -142,50 +140,50 @@ gldsCorrectedAssoc <- function(drugMat, drugRelationshipList, markerMat, numCorD
     results_naivePs[[i]] <- rep(NA, nrow(markerMat))
     results_naiveBetas[[i]] <- numeric()
     results_naiveBetas[[i]] <- rep(NA, nrow(markerMat))
-    for(j in 1:nrow(markerMat)){
-      if(sum(markerMat[j, comNames]) > minMuts){ #comNames are the common cell line names.
-        if(is.null(additionalCovariateMatrix)) #If no additional covariate have been provided....
-        {
-          theCoefs <- coef(summary(lm(drugMat[comNames, i]~markerMat[j, comNames])))
-          #Fit the linear models using the standard lm() function.
-          #Calculate the p-values using the summary() function, which calculates the significance of the model coefficients using t-tests.
-          results_naivePs[[i]][j] <- theCoefs[2, 4]
-          results_naiveBetas[[i]][j] <- theCoefs[2, 1]
-
-          theCoefs <- coef(summary(lm(drugMat[comNames, i]~markerMat[j, comNames]+controlPCsAllCom[,1:10])))
-          results_gldsPs[[i]][j] <- theCoefs[2, 4]
-          results_gldsBetas[[i]][j] <- theCoefs[2, 1]
-        }
-        else #If there are other covariates, include them in the models.
-        {
-          theCoefs <- coef(summary(lm(drugMat[comNames, i]~markerMat[j, comNames]+additionalCovariateMatrix[comNames,])))
-          #Fit the linear models using the standard lm() function.
-          #Calculate the p-values using the summary() function, which calculates the significance of the model coefficients using t-tests.
-          results_naivePs[[i]][j] <- theCoefs[2, 4]
-          results_naiveBetas[[i]][j] <- theCoefs[2, 1]
-
-          theCoefs <- coef(summary(lm(drugMat[comNames, i]~markerMat[j, comNames]+controlPCsAllCom[,1:10]+additionalCovariateMatrix[comNames,])))
-          results_gldsPs[[i]][j] <- theCoefs[2, 4]
-          results_gldsBetas[[i]][j] <- theCoefs[2, 1]
-        }
+    for(j in 1:nrow(markerMat))
+    {
+      if(sum(markerMat[j, comNames]) > minMuts)
+      {
+	if(is.null(additionalCovariateMatrix)) # if no additional covariate have been provided....
+	{
+	  theCoefs <- coef(summary(lm(drugMat[comNames, i]~markerMat[j, comNames])))
+	  results_naivePs[[i]][j] <- theCoefs[2, 4]
+	  results_naiveBetas[[i]][j] <- theCoefs[2, 1]
+	  
+	  theCoefs <- coef(summary(lm(drugMat[comNames, i]~markerMat[j, comNames]+controlPCsAllCom[,1:10])))
+	  results_gldsPs[[i]][j] <- theCoefs[2, 4]
+	  results_gldsBetas[[i]][j] <- theCoefs[2, 1]
+	}
+	else # if there are other covariates, include them in the models.
+	{
+	  theCoefs <- coef(summary(lm(drugMat[comNames, i]~markerMat[j, comNames]+additionalCovariateMatrix[comNames,])))
+	  results_naivePs[[i]][j] <- theCoefs[2, 4]
+	  results_naiveBetas[[i]][j] <- theCoefs[2, 1]
+	  
+	  theCoefs <- coef(summary(lm(drugMat[comNames, i]~markerMat[j, comNames]+controlPCsAllCom[,1:10]+additionalCovariateMatrix[comNames,])))
+	  results_gldsPs[[i]][j] <- theCoefs[2, 4]
+	  results_gldsBetas[[i]][j] <- theCoefs[2, 1]
+	}
       }
     }
-    #cat(paste(i, " ", sep=""))
+    # cat(paste(i, " ", sep=""))
     names(results_gldsPs[[i]]) <- rownames(markerMat)
     names(results_naivePs[[i]]) <- rownames(markerMat)
     names(results_gldsBetas[[i]]) <- rownames(markerMat)
     names(results_naiveBetas[[i]]) <- rownames(markerMat)
-
-    setTxtProgressBar(pb, i)#Update progress bar
-
+    
+    setTxtProgressBar(pb, i) # update progress bar
+    
   }
   close(pb)
   names(results_gldsPs) <- colnames(drugMat)
   names(results_naivePs) <- colnames(drugMat)
   names(results_gldsBetas) <- colnames(drugMat)
   names(results_naiveBetas) <- colnames(drugMat)
-
+  
   outList <- list(pGlds=results_gldsPs, betaGlds=results_gldsBetas, pNaive=results_naivePs, betaNaive=results_naiveBetas)
-  write.table(outList, file='./GLDS_output.txt')
-  #return(outList)
+  
+  write.csv(outList, file="./GLDS_Output.csv", row.names = TRUE, col.names = TRUE)
+
+  return(outList)  
 }

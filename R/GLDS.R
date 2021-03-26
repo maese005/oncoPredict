@@ -126,7 +126,9 @@ gldsCorrectedAssoc <- function(drugMat, drugRelationshipList, markerMat, numCorD
   {
     # Calculate 10 PCs on non-related sets of drugs....
     negControlDrugs <- colnames(drugMat)[!as.logical(drugRelationshipList[[i]])]
-    pairwiseCorNear <- names(rank(abs(pairCor[, colnames(drugMat)[i]]))[(numDrugs-numCorDrugsExclude):numDrugs]) # NB also remove very correlated drugs. Number defined by "numCorDrugsExclude".
+    #pairwiseCorNear <- names(rank(abs(pairCor[, colnames(drugMat)[i]]))[(numDrugs-numCorDrugsExclude):numDrugs]) # NB also remove very correlated drugs. Number defined by "numCorDrugsExclude".
+    pairwiseCorNear <- names(sort(abs(pairCor[, colnames(drugMat)[i]]), decreasing=FALSE)[(numDrugs-numCorDrugsExclude):numDrugs]) # NB also remove very correlated drugs. Number defined by "numCorDrugsExclude".
+
     negControlDrugs <- setdiff(negControlDrugs, pairwiseCorNear) # remove very highly correlated drugs from "negative controls"
     controlPCsAll <- prcomp(drugMat[, negControlDrugs])$x
     controlPCsAllCom <- controlPCsAll[comNames, ]

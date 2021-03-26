@@ -263,6 +263,8 @@ calcPhenotype<-function (trainingExprData,
   rsqs<-list() #Collects R^2 values.
   cors<-list() #Collects correlation coefficient for each gene across all samples vs. each drug across all samples.
 
+  #vs=c()
+  
   drugs<-colnames(trainingPtype) #Store all the possible drugs in a vector.
   
   #Check the supplied data and parameters.
@@ -380,14 +382,23 @@ calcPhenotype<-function (trainingExprData,
         #Remove genes that you have no transcriptome data for (aka columns are filled with 0's).
         #If you don't, it causes problems in linearRidge().
         #This is weird, but there were 2 genes in CTRPv2 data that had 0's for one drug (I suppose this occurs depending on sample filtration). 
+        #Make sure you remove those same genes from the test data...want to make sure the genes are the same in both train_x and test_x
         x<-as.vector(colSums(train_x)) #Sum each column. 
         bad<-which(x == 0) #Column/genes indices that are filled with only 0's.
-        train_x<-train_x[,-bad] #Remove the genes that had no expression. 
-        
-        #Make sure you remove those same genes from the test data...want to make sure the genes are the same in both train_x and test_x
-        test_x<-test_x[,-bad]
-        
-        #FALSE %in% (colnames(test_x) == colnames(expression))
+        if(length(bad) != 0){
+          train_x<-train_x[,-bad]
+          test_x<-data.frame(test_x[,-bad])
+        } 
+        #Remove genes with 0 variance. If you don't, this will also cause problems in linearRidge().
+        variance<-c()
+        for(i in 1:ncol(train_x)){
+          variance[i]<-var(as.vector(train_x[,i]))
+        } 
+        bi<-which(variance %in% 0) #Bad index...gene has 0 variance.
+        if(length(bi) != 0){
+          train_x<-train_x[,-bi]
+          test_x<-data.frame(test_x[,-bi])
+        }
         
         #Check to make sure you have more than 1 training sample for the drug's model.
         #_______________________________________________________________
@@ -402,6 +413,8 @@ calcPhenotype<-function (trainingExprData,
           
           v=cumsum(explvar(pcr_model)) #A vector of all the pcs and their percent of variance. 
           ncomp=min(which(v > percent)) #Identify which pcs will represent 80% variance. 
+          
+          #vs[a]<-ncomp
           
           if(printOutput) cat("\nCalculating predicted phenotype using pcr...")
           preds<-predict(pcr_model, newdata=test_x, ncomp=ncomp)
@@ -433,8 +446,25 @@ calcPhenotype<-function (trainingExprData,
               test_y<-test_x[,ncol]
               test_x<-test_x[,-ncol]
               
-              #data<-as.data.frame(cbind(train_x, train_y))
-              
+              #Remove genes that you have no transcriptome data for aka columns are filled with 0's. 
+              #If you don't, it causes problems in linearRidge()
+              #Make sure you remove these same genes from the test data...want to make sure the genes are the same in both. 
+              x<-as.vector(colSums(train_x))
+              bad<-which(x == 0)
+              if (length(bad) != 0){
+                train_x<-train_x[,-bad]
+                test_x<-data.frame(test_x[,-bad])
+              } 
+              #Remove genes with 0 variance. If you don't, this will also cause problems in linearRidge()
+              variance<-c()
+              for(i in 1:ncol(train_x)){
+                variance[i]<-var(as.vector(train_x[,i]))
+              } 
+              bi<-which(variance %in% 0) #Bad index...gene has 0 variance. 
+              if (length(bi) != 0){
+                train_x<-train_x[,-bi]
+              } 
+                      
               data<-data.frame(Resp=train_y, train_x)
 
               pcr_model<-pcr(Resp~., data=data, validation='CV') #Set validation argument to CV.
@@ -642,4 +672,6 @@ calcPhenotype<-function (trainingExprData,
     dir.create("./calcPhenotype_Output")
     write.table(cor_mat, file="./calcPhenotype_Output/cors.txt")
   }
+  
+  #print(vs)
 }

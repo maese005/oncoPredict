@@ -101,13 +101,15 @@ completeMatrix <- function(senMat, nPerms=50)
 #'@param drugRelationshipList A list, which for each drug, contains a vector of 1's and 0's, indicating whether the drugs are related (e.g. if both drugs were an inhibitor of ERBB2, that position would contain a 1).
 #'The order of the drugs should be the same as the order of the drug sensitivity matrix drugMat.
 #'@param markerMat A matrix containing the data for which you are looking for an association with drug sensitivity (e.g. a matrix of somatic mutation data). rownames() are marker names (e.g. gene names), and colnames() are samples.
-#'@param numCorDrugsExclude The number of highly correlated drugs to remove. The default is 100.
-#'#When calculating GLDS, it is recommended to exclude 25% of drugs in your data set, which have a high correlation with the drug of interest, from the calculation of GLDS to prevent removing a drug specific signal.
+#'@param threshold Determine the correlation coefficient. Drugs with a correlation coefficient greater than or equal to this number with the drug under scrutiny will be removed from the negative control group.
 #'@param minMuts The minimum number of non-zero entries required so that a p-value can be calculated (e.g. how many somatic mutations must be present). The default is 5.
 #'@param additionalCovariateMatrix A matrix containing covariates to be fit in the drug biomarker association models. This could be, for example, tissue of origin or cancer type. Columns are sample names. The default is NULL.
 #'@export
-gldsCorrectedAssoc <- function(drugMat, drugRelationshipList, markerMat, numCorDrugsExclude=100, minMuts=5, additionalCovariateMatrix=NULL)
+gldsCorrectedAssoc <- function(drugMat, drugRelationshipList, markerMat, minMuts=5, additionalCovariateMatrix=NULL, threshold=0.7)
 {
+  #I removed this parameter because we're identifying highly correlated drugs differently now...
+  #numCorDrugsExclude=100
+  
   results_gldsPs <- list()
   results_gldsBetas <- list()
   results_naivePs <- list()
@@ -124,11 +126,16 @@ gldsCorrectedAssoc <- function(drugMat, drugRelationshipList, markerMat, numCorD
   pb <- txtProgressBar(min = 0, max = ncol(drugMat), style = 3) # create progress bar
   for(i in 1:ncol(drugMat))
   {
-    # Calculate 10 PCs on non-related sets of drugs....
+    #Calculate 10 PCs on non-related sets of drugs....
     negControlDrugs <- colnames(drugMat)[!as.logical(drugRelationshipList[[i]])]
+    
+    #pairwiseCorNear <- try(names(sort(abs(pairCor[, colnames(cm)[j]]), decreasing=FALSE)[179:198]), silent=TRUE) #NB also remove very correlated drugs... 
     #pairwiseCorNear <- names(rank(abs(pairCor[, colnames(drugMat)[i]]))[(numDrugs-numCorDrugsExclude):numDrugs]) # NB also remove very correlated drugs. Number defined by "numCorDrugsExclude".
-    pairwiseCorNear <- names(sort(abs(pairCor[, colnames(drugMat)[i]]), decreasing=FALSE)[(numDrugs-numCorDrugsExclude):numDrugs]) # NB also remove very correlated drugs. Number defined by "numCorDrugsExclude".
-
+    #pairwiseCorNear <- names(sort(abs(pairCor[, colnames(drugMat)[i]]), decreasing=FALSE)[(numDrugs-numCorDrugsExclude):numDrugs]) # NB also remove very correlated drugs. Number defined by "numCorDrugsExclude".
+    mags<-sort(abs(pairCor[, colnames(cm)[j]]), decreasing=FALSE) >= threshold
+    pairwiseCorNear<-names(which(mags == "TRUE"))
+    negControlDrugs <- setdiff(negControlDrugs, pairwiseCorNear)
+    
     negControlDrugs <- setdiff(negControlDrugs, pairwiseCorNear) # remove very highly correlated drugs from "negative controls"
     controlPCsAll <- prcomp(drugMat[, negControlDrugs])$x
     controlPCsAllCom <- controlPCsAll[comNames, ]
@@ -146,26 +153,26 @@ gldsCorrectedAssoc <- function(drugMat, drugRelationshipList, markerMat, numCorD
     {
       if(sum(markerMat[j, comNames]) > minMuts)
       {
-	if(is.null(additionalCovariateMatrix)) # if no additional covariate have been provided....
-	{
-	  theCoefs <- coef(summary(lm(drugMat[comNames, i]~markerMat[j, comNames])))
-	  results_naivePs[[i]][j] <- theCoefs[2, 4]
-	  results_naiveBetas[[i]][j] <- theCoefs[2, 1]
-	  
-	  theCoefs <- coef(summary(lm(drugMat[comNames, i]~markerMat[j, comNames]+controlPCsAllCom[,1:10])))
-	  results_gldsPs[[i]][j] <- theCoefs[2, 4]
-	  results_gldsBetas[[i]][j] <- theCoefs[2, 1]
-	}
-	else # if there are other covariates, include them in the models.
-	{
-	  theCoefs <- coef(summary(lm(drugMat[comNames, i]~markerMat[j, comNames]+additionalCovariateMatrix[comNames,])))
-	  results_naivePs[[i]][j] <- theCoefs[2, 4]
-	  results_naiveBetas[[i]][j] <- theCoefs[2, 1]
-	  
-	  theCoefs <- coef(summary(lm(drugMat[comNames, i]~markerMat[j, comNames]+controlPCsAllCom[,1:10]+additionalCovariateMatrix[comNames,])))
-	  results_gldsPs[[i]][j] <- theCoefs[2, 4]
-	  results_gldsBetas[[i]][j] <- theCoefs[2, 1]
-	}
+        if(is.null(additionalCovariateMatrix)) # if no additional covariate have been provided....
+        {
+          theCoefs <- coef(summary(lm(drugMat[comNames, i]~markerMat[j, comNames])))
+          results_naivePs[[i]][j] <- theCoefs[2, 4]
+          results_naiveBetas[[i]][j] <- theCoefs[2, 1]
+          
+          theCoefs <- coef(summary(lm(drugMat[comNames, i]~markerMat[j, comNames]+controlPCsAllCom[,1:10])))
+          results_gldsPs[[i]][j] <- theCoefs[2, 4]
+          results_gldsBetas[[i]][j] <- theCoefs[2, 1]
+        }
+        else # if there are other covariates, include them in the models.
+        {
+          theCoefs <- coef(summary(lm(drugMat[comNames, i]~markerMat[j, comNames]+additionalCovariateMatrix[comNames,])))
+          results_naivePs[[i]][j] <- theCoefs[2, 4]
+          results_naiveBetas[[i]][j] <- theCoefs[2, 1]
+          
+          theCoefs <- coef(summary(lm(drugMat[comNames, i]~markerMat[j, comNames]+controlPCsAllCom[,1:10]+additionalCovariateMatrix[comNames,])))
+          results_gldsPs[[i]][j] <- theCoefs[2, 4]
+          results_gldsBetas[[i]][j] <- theCoefs[2, 1]
+        }
       }
     }
     # cat(paste(i, " ", sep=""))

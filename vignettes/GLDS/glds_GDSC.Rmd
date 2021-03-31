@@ -47,7 +47,9 @@ Apply the GLDS function.
 
 #_______________________________________________________________________________________________________________________________________________________________
 #'@param drugMat A matrix of drug sensitivity data. rownames() are pre-clinical samples, and colnames() are drug names.
+#The sensitivity data used here is GDSCv2 (805 cell lines x 198 drugs).
 
+#Read GDSC's updated cell line information file.
 library(readxl)
 cellLineDetails<-read_excel('Cell_Lines_Details.xlsx')
 

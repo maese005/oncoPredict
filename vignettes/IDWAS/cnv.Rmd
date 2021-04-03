@@ -76,6 +76,7 @@ rownames(drug_prediction)<-gsub(".", "-", rownames(drug_prediction), fixed=T)
 #Make sure the sample identifiers in the 'drug prediction' data are of similar form as the sample identifiers in the 'data' parameter.
 rows=rownames(drug_prediction)
 rownames(drug_prediction)<-substring(rows, 3, nchar(rows))
+drug_prediction<-as.data.frame(drug_prediction)
 
 #Set the data parameter.
 load('./map.RData') #This loads the object 'theCnvQuantVecList_mat', which was obtained using map_cnv()

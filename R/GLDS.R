@@ -141,7 +141,6 @@ gldsCorrectedAssoc <- function(drugMat, drugRelatedness, markerMat, minMuts=5, a
       
       mags<-sort(abs(pairCor[, colnames(drugMat)[i]]), decreasing=FALSE) >= threshold
       pairwiseCorNear<-names(which(mags == "TRUE"))
-      negControlDrugs <- setdiff(negControlDrugs, pairwiseCorNear)
       
       negControlDrugs <- setdiff(negControlDrugs, pairwiseCorNear) # remove very highly correlated drugs from "negative controls"
       

@@ -98,9 +98,11 @@ completeMatrix <- function(senMat, nPerms=50)
 }
 #'This function determines drug-gene associations for pre-clinical data.
 #'@param drugMat A matrix of drug sensitivity data. rownames() are pre-clinical samples, and colnames() are drug names.
-#'@param drugRelatedness A matrix in which column 1 contains a list of compounds, and column 2 contains a list of their corresponding target pathways. 
+#'@param drugRelatedness A matrix in which column 1 contains a list of compounds, and column 2 contains a list of their corresponding target pathways. Given the subjective nature of
+#'drug classification, please ensure these pathways are as specific as possible for accurate results. 
 #'@param markerMat A matrix containing the data for which you are looking for an association with drug sensitivity (e.g. a matrix of somatic mutation data). rownames() are marker names (e.g. gene names), and colnames() are samples.
 #'@param threshold Determine the correlation coefficient. Drugs with a correlation coefficient greater than or equal to this number with the drug under scrutiny will be removed from the negative control group.
+#'The default is 0.7
 #'@param minMuts The minimum number of non-zero entries required so that a p-value can be calculated (e.g. how many somatic mutations must be present). The default is 5.
 #'@param additionalCovariateMatrix A matrix containing covariates to be fit in the drug biomarker association models. This could be, for example, tissue of origin or cancer type. Columns are sample names. The default is NULL.
 #'@export
@@ -132,16 +134,26 @@ gldsCorrectedAssoc <- function(drugMat, drugRelatedness, markerMat, minMuts=5, a
       cat(paste('\n', colnames(drugMat)[i], 'is skipped because it is not included in your drug relatedness info'))
     }else{
       #Calculate 10 PCs on non-related sets of drugs....
-      categoryThisDrug<-(drugRelatedness[,2])[index]
-      indices<-which(drugRelatedness[,2] != categoryThisDrug) #Indices of categories that aren't the category of the current drug.
-      negControlDrugs<-unique((drugRelatedness[,1])[indices])
+      categoryThisDrug<-(drugRelatedness[,2])[index] #The MOA of the drug under scrutiny.
+      thisDrug<-(drugRelatedness[,1])[index] #The drug under scrutiny.
       
-      #pairwiseCorNear <- names(rank(abs(pairCor[, colnames(drugMat)[i]]))[(numDrugs-numCorDrugsExclude):numDrugs]) # NB also remove very correlated drugs. Number defined by "numCorDrugsExclude".
-      #pairwiseCorNear <- names(sort(abs(pairCor[, colnames(drugMat)[i]]), decreasing=FALSE)[(numDrugs-numCorDrugsExclude):numDrugs]) # NB also remove very correlated drugs. Number defined by "numCorDrugsExclude".
+      #Identify all the other drugs in this dataset that are not part of this same drug category...
+      negControlDrugs<-c() #Drugs that don't have the same MOA as the drug under scrutiny.
+      categoryThisDrug_vec<-scan(text=categoryThisDrug, what="", quiet=TRUE) #The MOA string for the drug of interest will be broken up into elements (each element is a word).
+      for (k in 1:length(drugRelatedness[,2])){ #For each MOA...
+        s1<-(drugRelatedness[,2])[k] #String one...the MOA for a drug.
+        vec<-scan(text = s1, what =  "", quiet=TRUE) #The string is broken up into a vector by spaces such that each element is a word in the string.
+        if (FALSE %in% (categoryThisDrug_vec %in% vec)){
+          negControlDrugs[k]<-(drugRelatedness[,1])[k]
+        }
+      }
       
+      #indices<-which(drugRelatedness[,2] != categoryThisDrug) #Indices of categories that aren't the category of the current drug.
+      #negControlDrugs<-unique((drugRelatedness[,1])[indices])
+            
       mags<-sort(abs(pairCor[, colnames(drugMat)[i]]), decreasing=FALSE) >= threshold
       pairwiseCorNear<-names(which(mags == "TRUE"))
-      
+
       negControlDrugs <- setdiff(negControlDrugs, pairwiseCorNear) # remove very highly correlated drugs from "negative controls"
       
       indices<-match(negControlDrugs, colnames(drugMat))

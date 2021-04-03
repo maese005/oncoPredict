@@ -98,6 +98,7 @@ mutationMat4<-mutationMat3 %>%
   pivot_wider(names_from=genetic_feature,
               values_from=is_mutated)
 rownames(mutationMat4)<-as.vector(unlist(mutationMat4[,1])) #Make cell lines the rownames...right now they are column 1.
+cols<-rownames(mutationMat4)
 mutationMat4<-as.matrix(t(mutationMat4[,-1]))
 
 #Make sure the matrix is numeric.
@@ -108,6 +109,7 @@ markerMat<-mutationMat4
 
 # replace all non-finite values with 0
 markerMat[!is.finite(markerMat)] <- 0
+colnames(markerMat)<-cols
 dim(markerMat) #1315 1389
 #_______________________________________________________________________________________________________________________________________________________________
 #'@param drugRelatedness 

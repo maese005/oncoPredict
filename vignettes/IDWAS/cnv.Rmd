@@ -58,7 +58,7 @@ library(pRRopheticplus)
 
 #Apply map_cnv()
 #This function produces the file map.RData, which stores the object 'theCnvQuantVecList_mat'
-map_cnv(theRootDir=theRootDir, Cnvs=Cnvs)
+map_cnv(Cnvs=Cnvs)
 ```
 
 Third, apply test() to test each cnv and each drug. The p-values and beta-values for each test will be exported to your working directory as CnvTestOutput_pVals.txt and CnvTestOutput_betas.txt

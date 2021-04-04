@@ -483,7 +483,7 @@ test<-function(drug_prediction, data, n=10, cnv){
       
       output1<-sort(unlist(betaValList))[1:30]
       
-      write.table(output, file='./MutationTestOutput_pVal555555.txt')
+      write.table(output, file='./MutationTestOutput_pVal.txt')
       
       write.table(output1, file='./MutationTestOutput_betaVal.txt')
       

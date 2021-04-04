@@ -51,7 +51,6 @@ library(org.Hs.eg.db)
 library(GenomicFeatures)
 
 #Determine the parameters of the map_cnv() function.
-theRootDir=getwd()
 Cnvs<-read.table('./cnv.txt', header=TRUE, row.names=1)
 
 library(pRRopheticplus)

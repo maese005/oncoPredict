@@ -32,18 +32,25 @@ biocViews:
     sva,
     preprocessCore, 
     stringr,
-    org.Hs.eg.db,
     biomaRt,
     EnsDb.Hsapiens.v75,
-    TCGAbiolinks (>= 2.16.4)
     genefilter,
     ensembldb,
-    illuminaHumanv4.db 
-Imports: 
-    downloader,
-    car,
-    tidyverse,
+    illuminaHumanv4.db,
+    org.Hs.eg.db,
+    GenomicFeatures,
+    TxDb.Hsapiens.UCSC.hg19.knownGene
+Suggests: 
     readxl,
+    base,
+    TCGAbiolinks (>= 2.16.4),
+    tidyverse,
+    downloader,
+    caret,
+    glmnet,
+    gdata,
+    parallel,
     ridge,
-    gdata, 
-    caret 
+    car,
+    base,
+    pls

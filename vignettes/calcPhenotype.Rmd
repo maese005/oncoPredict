@@ -21,7 +21,15 @@ Apply calcPhenotype()
 #Set the seed for reproducibility. 
 set.seed(12345)
 
-#Make sure libraries are loaded. 
+#Make sure libraries are installed and loaded. 
+if (!requireNamespace("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+    
+BiocManager::install("sva")
+
+install.packages('car')
+install.packages('ridge')
+
 library('pRRopheticplus')
 library('sva')
 library('preprocessCore')

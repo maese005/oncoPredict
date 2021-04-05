@@ -28,23 +28,22 @@ RoxygenNote: 7.1.1
 Suggests: 
     knitr,
     rmarkdown
-VignetteBuilder: knitr
-Imports: 
+biocViews:
     sva,
     preprocessCore, 
     stringr,
     org.Hs.eg.db,
     biomaRt,
     EnsDb.Hsapiens.v75,
+    TCGAbiolinks (>= 2.16.4)
+    genefilter,
+    ensembldb,
+    illuminaHumanv4.db 
+Imports: 
     downloader,
     car,
-    genefilter,
     tidyverse,
-    ensembldb,
     readxl,
-    illuminaHumanv4.db, 
     ridge,
     gdata, 
-    caret, 
-    biomaRt,
-    TCGAbiolinks (>= 2.16.4)
+    caret 

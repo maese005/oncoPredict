@@ -24,10 +24,7 @@ License: GPL-2
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.1.1
-Suggests: 
-    knitr,
-    rmarkdown
+RoxygenNote: 7.1.1    
 biocViews:
     sva,
     preprocessCore, 
@@ -41,6 +38,8 @@ biocViews:
     GenomicFeatures,
     TxDb.Hsapiens.UCSC.hg19.knownGene
 Suggests: 
+    knitr,
+    rmarkdown,
     readxl,
     base,
     TCGAbiolinks (>= 2.16.4),

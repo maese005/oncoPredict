@@ -238,6 +238,7 @@ summarizeGenesByMean <- function(exprMat)
 #'@import ridge
 #'@import car
 #'@import base
+#'@import pls
 #'@keywords predict drug sensitivity and phenotype
 #'@export
 calcPhenotype<-function (trainingExprData,

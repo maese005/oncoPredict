@@ -106,7 +106,7 @@ completeMatrix <- function(senMat, nPerms=50)
 #'@param minMuts The minimum number of non-zero entries required so that a p-value can be calculated (e.g. how many somatic mutations must be present). The default is 5.
 #'@param additionalCovariateMatrix A matrix containing covariates to be fit in the drug biomarker association models. This could be, for example, tissue of origin or cancer type. Columns are sample names. The default is NULL.
 #'@export
-gldsCorrectedAssoc <- function(drugMat, drugRelatedness, markerMat, minMuts=5, additionalCovariateMatrix=NULL, threshold=0.7){
+glds <- function(drugMat, drugRelatedness, markerMat, minMuts=5, additionalCovariateMatrix=NULL, threshold=0.7){
   
   results_gldsPs <- list()
   results_gldsBetas <- list()

@@ -100,7 +100,7 @@ map_cnv<-function(Cnvs){
 #'@import TxDb.Hsapiens.UCSC.hg19.knownGene
 #'@import GenomicFeatures
 #'@export
-test<-function(drug_prediction, data, n=10, cnv){
+idwas<-function(drug_prediction, data, n=10, cnv){
   
   #Check parameters.
   #_____________________________________________________________________________

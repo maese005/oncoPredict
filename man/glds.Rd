@@ -6,11 +6,11 @@
 \usage{
 glds(
   drugMat,
-  drugRelationshipList,
+  drugRelatedness,
   markerMat,
-  numCorDrugsExclude = 100,
   minMuts = 5,
-  additionalCovariateMatrix = NULL
+  additionalCovariateMatrix = NULL,
+  threshold=0.7
 )
 }
 \arguments{

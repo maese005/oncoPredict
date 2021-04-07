@@ -1,5 +1,5 @@
 ---
-title: "Download CNV data from GDC, then apply map_cnv() and test()"
+title: "Download CNV data from GDC, then apply map_cnv() and idwas()"
 output: rmarkdown::html_document
 vignette: >
   %\VignetteIndexEntry{Introduction}
@@ -60,11 +60,11 @@ library(pRRopheticplus)
 map_cnv(Cnvs=Cnvs)
 ```
 
-Third, apply test() to test each cnv and each drug. The p-values and beta-values for each test will be exported to your working directory as CnvTestOutput_pVals.txt and CnvTestOutput_betas.txt
+Third, apply idwas() to test each cnv and each drug. The p-values and beta-values for each test will be exported to your working directory as CnvTestOutput_pVals.txt and CnvTestOutput_betas.txt
 ```{r}
-#Determine test() parameters.
+#Determine idwas() parameters.
 
-#Determine the parameters of the test() function...
+#Determine the parameters of the idwas() function...
 
 #Set the drug_prediction parameter.
 #Make sure rownames() are samples, and colnames() are drugs. Also make sure this data is a data frame.
@@ -90,6 +90,6 @@ n=10
 #Indicate whether or not you would like to test cnv data. If TRUE, you will test cnv data. If FALSE, you will test mutation data.
 cnv=TRUE
 
-#Apply test()
-test(drug_prediction=drug_prediction, data=data, n=n, cnv=cnv)
+#Apply idwas()
+idwas(drug_prediction=drug_prediction, data=data, n=n, cnv=cnv)
 ```

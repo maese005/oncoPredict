@@ -1,4 +1,4 @@
-# pRRophetic_plus
+# predict
 
 An R package for drug response prediction and drug-gene association prediction. The prepared GDSC and CTRP matrices for the calcPhenotype() are here: [GDSC and CTRP Data](https://osf.io/c6tfx/)
  *  For drug response prediction, use **calcPhenotype**. This code is based on the paper: [pRRophetic](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0107468)

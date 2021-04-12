@@ -24,7 +24,7 @@ Apply completeMatrix()
 #  install.packages("BiocManager")
 #BiocManager::install('TCGAbiolinks')
 
-library(pRRopheticplus)
+library(oncopredict)
 
 #Set parameters of completeMatrix()
 nPerms=50

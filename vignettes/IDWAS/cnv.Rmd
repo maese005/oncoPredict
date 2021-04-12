@@ -53,7 +53,7 @@ library(GenomicFeatures)
 #Determine the parameters of the map_cnv() function.
 Cnvs<-read.table('./cnv.txt', header=TRUE, row.names=1)
 
-library(pRRopheticplus)
+library(oncopredict)
 
 #Apply map_cnv()
 #This function produces the file map.RData, which stores the object 'theCnvQuantVecList_mat'

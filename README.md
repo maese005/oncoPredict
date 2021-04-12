@@ -1,4 +1,4 @@
-# predict 
+# oncoPredict 
 (Predict Response from Expression Data and Identify Cell line/Clinical Targets and Trends)
 
 An R package for drug response prediction and drug-gene association prediction. The prepared GDSC and CTRP matrices for the calcPhenotype() are here: [GDSC and CTRP Data](https://osf.io/c6tfx/)

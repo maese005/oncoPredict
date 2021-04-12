@@ -30,7 +30,7 @@ BiocManager::install("sva")
 install.packages('car')
 install.packages('ridge')
 
-library('pRRopheticplus')
+library('oncopredict')
 library('sva')
 library('preprocessCore')
 library('stringr')

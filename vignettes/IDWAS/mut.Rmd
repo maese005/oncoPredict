@@ -51,7 +51,7 @@ n=10
 #Indicate whether or not you would like to test cnv data. If TRUE, you will test cnv data. If FALSE, you will test mutation data.
 cnv=FALSE
 
-library(pRRopheticplus)
+library(oncopredict)
 
 #Apply idwas()
 #This function wil export the files MutationTestOutput_pVal.txt and #MutationTestOutput_betaVal.txt

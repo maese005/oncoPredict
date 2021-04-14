@@ -105,8 +105,10 @@ completeMatrix <- function(senMat, nPerms=50)
 #'The default is 0.7
 #'@param minMuts The minimum number of non-zero entries required so that a p-value can be calculated (e.g. how many somatic mutations must be present). The default is 5.
 #'@param additionalCovariateMatrix A matrix containing covariates to be fit in the drug biomarker association models. This could be, for example, tissue of origin or cancer type. Columns are sample names. The default is NULL.
+#'@param expression A matrix of expression data. rownames() are genes, and colnames() are the same pre-clinical samples as those in the drugMat (also in the same order).
+#'The default is NULL. If expression data is provided, a gene signature will be obtained. 
 #'@export
-glds <- function(drugMat, drugRelatedness, markerMat, minMuts=5, additionalCovariateMatrix=NULL, threshold=0.7){
+glds <- function(drugMat, drugRelatedness, markerMat, minMuts=5, additionalCovariateMatrix=NULL, expression=NULL, threshold=0.7){
   
   results_gldsPs <- list()
   results_gldsBetas <- list()
@@ -161,6 +163,24 @@ glds <- function(drugMat, drugRelatedness, markerMat, minMuts=5, additionalCovar
       controlPCsAll <- prcomp(drugMat[, indices])$x
 
       controlPCsAllCom <- controlPCsAll[comNames, ]
+    
+      #This section determines the gene signature.
+      if(!is.null(expression)){ #If expression matrix was provided, then gene signatures can also be obtained...
+        spearCorList<-list()
+        for(p in 1:10){
+          exprComSamples<-rownames(controlPCsAll)[rownames(controlPCsAll) %in% colnames(expression)] #Samples for which you have mutation, expression, and sensitivity data for.
+          for(g in 1:nrow(expression)){
+            spearCorList[[p]][g]<-cor.test(controlPCsAll[exprComSamples,p],
+                                           expression[g,exprComSamples],
+                                           method='spearman')$p.value
+            }
+          names(spearCorList[[p]])<-rownames(expression)
+          }
+        mdrExprGenesList[[j]] <- unique(as.character(unique(sapply(spearCorList, function(vec)return(names(sort(vec)[1:50])))))) #The full list of genes for this drug.
+        names(mdrExprGenesList)<-colnames(drugMat)  
+        controlGeneFrequency <- table(do.call(c, mdrExprGenesList)) #How often is each gene selected as a negative control	 
+        alwaysControlGene <- names(controlGeneFrequency[controlGeneFrequency == ncol(drugMat])	
+        }
       
       # Calculate the P-values and beta values for each marker for this drug, controlling for GLDS and not controlling for GLDS
       results_gldsPs[[i]] <- numeric()
@@ -220,5 +240,9 @@ glds <- function(drugMat, drugRelatedness, markerMat, minMuts=5, additionalCovar
     write.csv(results_naivePs, file="./naivePs.csv", row.names = TRUE, col.names = TRUE)
     write.csv(results_gldsBetas, file="./gldsBetas.csv", row.names = TRUE, col.names = TRUE)
     write.csv(results_naiveBetas, file="./naiveBetas.csv", row.names = TRUE, col.names = TRUE)
+                                                        
+    if(!is.null(additionalCovariateMatrix)){
+    write.csv(alwaysControlGene, file="./gene_signature.txt")
+  }
     
 }

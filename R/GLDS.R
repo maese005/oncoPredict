@@ -179,7 +179,7 @@ glds <- function(drugMat, drugRelatedness, markerMat, minMuts=5, additionalCovar
         mdrExprGenesList[[j]] <- unique(as.character(unique(sapply(spearCorList, function(vec)return(names(sort(vec)[1:50])))))) #The full list of genes for this drug.
         names(mdrExprGenesList)<-colnames(drugMat)  
         controlGeneFrequency <- table(do.call(c, mdrExprGenesList)) #How often is each gene selected as a negative control	 
-        alwaysControlGene <- names(controlGeneFrequency[controlGeneFrequency == ncol(drugMat])	
+        alwaysControlGene <- names(controlGeneFrequency[controlGeneFrequency == ncol(drugMat)])	
         }
       
       # Calculate the P-values and beta values for each marker for this drug, controlling for GLDS and not controlling for GLDS

@@ -10,23 +10,24 @@ glds(
   markerMat,
   minMuts = 5,
   additionalCovariateMatrix = NULL,
+  expression = NULL,
   threshold=0.7
 )
 }
 \arguments{
 \item{drugMat}{A matrix of drug sensitivity data. rownames() are pre-clinical samples, and colnames() are drug names.}
 
-\item{drugRelationshipList}{A list, which for each drug, contains a vector of 1's and 0's, indicating whether the drugs are related (e.g. if both drugs were an inhibitor of ERBB2, that position would contain a 1).
-The order of the drugs should be the same as the order of the drug sensitivity matrix drugMat.}
+\item{drugRelatedness}{A matrix in which column 1 contains a list of compounds, and column 2 contains a list of their corresponding target pathways. Given the subjective nature of drug classification, please ensure these pathways are as specific as possible for accurate results.}
 
 \item{markerMat}{A matrix containing the data for which you are looking for an association with drug sensitivity (e.g. a matrix of somatic mutation data). rownames() are marker names (e.g. gene names), and colnames() are samples.}
-
-\item{numCorDrugsExclude}{The number of highly correlated drugs to remove. The default is 100.
-#When calculating GLDS, it is recommended to exclude 25\% of drugs in your data set, which have a high correlation with the drug of interest, from the calculation of GLDS to prevent removing a drug specific signal.}
 
 \item{minMuts}{The minimum number of non-zero entries required so that a p-value can be calculated (e.g. how many somatic mutations must be present). The default is 5.}
 
 \item{additionalCovariateMatrix}{A matrix containing covariates to be fit in the drug biomarker association models. This could be, for example, tissue of origin or cancer type. Columns are sample names. The default is NULL.}
+
+\item{expression}{A matrix of expression data. rownames() are genes, and colnames() are the same pre-clinical samples as those in the drugMat (also in the same order).}
+                
+\item{threshold}{Determine the correlation coefficient. Drugs with a correlation coefficient greater than or equal to this number with the drug under scrutiny will be removed from the negative control group. The default is 0.7.}
 }
 \description{
 This function determines drug-gene associations for pre-clinical data.

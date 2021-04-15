@@ -79,8 +79,8 @@ map_cnv<-function(Cnvs){
   siteVec <- sapply(strsplit(names(CnvsList), "-"), function(l)return(l[4]))
   tumorSamps <- which(siteVec == "01A")
   save(theCnvQuantVecList_mat, tumorSamps, file="./map.RData") # Save these RData files for use by other scripts.
-  
-}
+} 
+                    
 #'This function will test every drug against every CNV or somatic mutation for your cancer type.
 #'@param drug_prediction The drug prediction data. Must be a data frame.
 #'If you have cnv data, make sure rownames() are samples, and colnames() are drugs.

@@ -1,7 +1,7 @@
 # oncoPredict 
 (Predict Response from Expression Data and Identify Cell line/Clinical Targets and Trends)
 
-An R package for drug response prediction and drug-gene association prediction. The prepared GDSC and CTRP matrices for the calcPhenotype() are here: [GDSC and CTRP Data](https://osf.io/c6tfx/) and here: [GDSC and CTRP Data] (https://drive.google.com/drive/folders/19KFOE0zJW6MA-xjokXUkD-rETc9V74UM?usp=sharing)
+An R package for drug response prediction and drug-gene association prediction. The prepared GDSC and CTRP matrices for the calcPhenotype() are here: [GDSC and CTRP Data](https://osf.io/c6tfx/) and here: [GDSC and CTRP Data](https://drive.google.com/drive/folders/19KFOE0zJW6MA-xjokXUkD-rETc9V74UM?usp=sharing)
  *  For drug response prediction, use **calcPhenotype**. This code is based on the paper: [pRRophetic](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0107468)
  *  For pre-clinical biomarker discovery, use **GLDS**. This code is based on the paper: [GLDS](https://genomebiology.biomedcentral.com/articles/10.1186/s13059-016-1050-9)
  * For clinical biomarker discovery, use **IDWAS** (for CNV or somatic mutation association with drug response) or indicate **cc=TRUE** (for gene expression association with drug response) in calcPhenotype(). The IDWAS code is based on the paper: [IDWAS](https://pubmed.ncbi.nlm.nih.gov/28847918/)

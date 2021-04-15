@@ -28,3 +28,4 @@ An R package for drug response prediction and drug-gene association prediction. 
 
 ## DESCRIPTION <h2>
  * This file contains the description documentation and metadata for this package. 
+![Figure 1_ Overview of pRRophetic_plus (a flow chart or similar diagram to highlight the package’s abilities)   (1)](https://user-images.githubusercontent.com/62571435/114938024-35868c00-9e04-11eb-82ae-ea9dbfa0a0a7.jpg)

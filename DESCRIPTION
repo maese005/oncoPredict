@@ -20,6 +20,7 @@ Authors@R:
            role = 'ctb',
            email = "paulgeeleher@gmail.com"))
 Description: This packages provides drug response prediction and biomarker discovery.
+Depends: R (>= 4.0.3)
 License: GPL-2
 Encoding: UTF-8
 LazyData: true
@@ -36,20 +37,20 @@ biocViews:
     illuminaHumanv4.db,
     org.Hs.eg.db,
     GenomicFeatures,
-    TxDb.Hsapiens.UCSC.hg19.knownGene
-Suggests: 
-    knitr,
-    rmarkdown,
+    TxDb.Hsapiens.UCSC.hg19.knownGene,
+    TCGAbiolinks (>= 2.16.4)
+Imports: 
     readxl,
-    base,
-    TCGAbiolinks (>= 2.16.4),
-    tidyverse,
-    downloader,
-    caret,
-    glmnet,
-    gdata,
     parallel,
     ridge,
     car,
+Suggests:
+    knitr,
+    rmarkdown,
     base,
+    tidyverse,
+    glmnet,
+    downloader,
+    caret,
+    gdata,
     pls

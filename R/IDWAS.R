@@ -207,7 +207,7 @@ idwas<-function(drug_prediction, data, n=10, cnv){
       #Fill those lists.
       #_______________________________________
       for(i in 1:length(unique)){
-        print(paste(i, "of", length(unique)), sep='')
+        #print(paste(i, "of", length(unique)), sep='')
         indices<-unique[i] == tcgaIds
         
         #Now for each sample, pull out a list of genes with somatic mutations
@@ -390,7 +390,7 @@ idwas<-function(drug_prediction, data, n=10, cnv){
       #Fill those lists.
       #_______________________________________
       for(i in 1:length(unique)){
-        print(paste(i, "of", length(unique)), sep='')
+        #print(paste(i, "of", length(unique)), sep='')
         indices<-unique[i] == sampIds
         
         #Now for each sample, pull out a list of genes with somatic mutations

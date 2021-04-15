@@ -258,7 +258,7 @@ idwas<-function(drug_prediction, data, n=10, cnv){
       mutMat_nodups_ordFilt <- mutMat_only01[, inPredAndMutData]
       commonMuts <- apply(mutMat_nodups_ordFilt, 1, sum)
       if (length(which(commonMuts >= n)) == 0){
-        stop((paste("\nERROR: Mutations were not identified in at least", n, "genes. Recommend decreasing the n parameter.", sep=" ")))
+        stop((paste("\nERROR: Mutations were not identified in at least", n, "patients. Recommend decreasing the n parameter.", sep=" ")))
       }
       commonlyMutated <- mutMat_nodups_ordFilt[which(commonMuts >= n), ]
       
@@ -420,7 +420,7 @@ idwas<-function(drug_prediction, data, n=10, cnv){
       mutMat_nodups_ordFilt <- mutMat[, inPredAndMutData]
       commonMuts <- apply(mutMat_nodups_ordFilt, 1, sum)
       if (length(which(commonMuts >= n)) == 0){
-        stop((paste("\nERROR: Mutations were not identified in at least", n, "genes. Recommend decreasing the n parameter.", sep=" ")))
+        stop((paste("\nERROR: Mutations were not identified in at least", n, "patients. Recommend decreasing the n parameter.", sep=" ")))
       }
       commonlyMutated <- mutMat_nodups_ordFilt[which(commonMuts >= n), ]
       

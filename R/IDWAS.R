@@ -91,7 +91,7 @@ map_cnv<-function(Cnvs){
 #'If you wish to use cnv data, use the output from map_cnv(), transpose it so that colnames() are samples. Or use data of similar form.
 #'If you wish to use mutation data, use the method for downloading mutation data outlined in the vignette, and
 #'make sure the TCGA barcodes use '-' instead of '.'; if you use another dataset (and don't download data from TCGA), make sure your data file includes the following columns: 'Variant_Classification', 'Hugo_Symbol', 'Tumor_Sample_Barcode'.
-#'@param n The number of samples you want CNVs or mutations to be amplified in. The default is 10.
+#'@param n The minimum number of samples you want CNVs or mutations to be amplified in. The default is 10 (arbitrarily chosen).
 #'@param cnv TRUE or FALSE. Indicate whether or not you would like to test cnv data. If TRUE, you will test cnv data. If FALSE, you will test mutation data.
 #'@keywords Test CNV or mutation data to genes.
 #'@import org.Hs.eg.db

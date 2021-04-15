@@ -233,7 +233,7 @@ idwas<-function(drug_prediction, data, n=10, cnv){
       #Now populate this matrix with the relevant information about what kind of mutation each gene has in each sample.
       #_______________________________________
       for(i in 1:length(unique)){
-        print(paste(i, "of", length(unique)), sep='')
+        #print(paste(i, "of", length(unique)), sep='')
         mutMat[genesWithProteinChangeList[[i]], i] <- rep(1, length(genesWithProteinChangeList[[i]]))
       }
       
@@ -416,7 +416,7 @@ idwas<-function(drug_prediction, data, n=10, cnv){
       #Now populate this matrix with the relevant information about what kind of mutation each gene has in each sample.
       #_______________________________________
       for(i in 1:length(unique)){
-        print(paste(i, "of", length(unique)), sep='')
+        #print(paste(i, "of", length(unique)), sep='')
         mutMat[genesWithProteinChangeList[[i]], i] <- rep(1, length(genesWithProteinChangeList[[i]]))
       }
       

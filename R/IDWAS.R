@@ -185,14 +185,8 @@ idwas<-function(drug_prediction, data, n=10, cnv){
       
       pVals <- sapply(allCors_hasAmps, function(item)return(item[[1]]))
       betas <- sapply(allCors_hasAmps, function(item)return(item[[2]]))
-      
-      #output<-cbind(pVals, betas)
-      
-      write.table(pVals, file='./CnvTestOutput_pVals.txt')
-      write.table(betas, file='./CnvTestOutput_betas.txt')
-      
-      #return((output)) # its going to be difficult to get at causality in a systematic way here....
-      
+      write.csv(cbind(pVals, betas), file='./CnvTestOutput_pVals_and_betas.csv')
+
     }else{
       #Obtain a list for the patients you have data for and initiate empty lists to fill.
       #_______________________________________
@@ -295,8 +289,7 @@ idwas<-function(drug_prediction, data, n=10, cnv){
       #_______________________________________
       sigPs <- list()
       pAdjListCantype <- list()
-      for(i in 1:length(pValList))
-      {
+      for(i in 1:length(pValList)){
         names(pValList[[i]]) <- rownames(commonlyMutated)
         names(betaValList[[i]]) <- rownames(commonlyMutated)
         padj <- p.adjust(pValList[[i]], method="BH")
@@ -308,16 +301,9 @@ idwas<-function(drug_prediction, data, n=10, cnv){
       names(betaValList) <- rownames(preds01a_filt_ord)
       names(pAdjListCantype) <- rownames(preds01a_filt_ord)
       
-      output<-sort(unlist(pValList))[1:30]
-      
-      output1<-sort(unlist(betaValList))[1:30]
-      
-      write.table(output, file='./MutationTestOutput_pVal.txt')
-      
-      write.table(output1, file='./MutationTestOutput_betaVal.txt')
-      
-      #Print the top associations
-      #return(output)
+      pVal<-unlist(pValList)
+      betaVal<-unlist(betaValList)
+      write.csv(cbind(pVal, betaVal), file='./MutationTestOutput_pVal_and_betaVal.csv')
     }
     #This code is for when you don't have TCGA barcoded samples (it's similar to above)
   } else {
@@ -370,9 +356,8 @@ idwas<-function(drug_prediction, data, n=10, cnv){
       pVals <- sapply(allCors_hasAmps, function(item)return(item[[1]]))
       betas <- sapply(allCors_hasAmps, function(item)return(item[[2]]))
       
-      write.table(pVals, file='./CnvTestOutput_pVals.txt')
-      write.table(betas, file='./CnvTestOutput_betas.txt')
-      
+      write.csv(cbind(pVals,betas), file='./CnvTestOutput_pVals_and_betas.csv')
+
       #return((pVals)) # its going to be difficult to get at causality in a systematic way here....
       
     } else {
@@ -479,16 +464,9 @@ idwas<-function(drug_prediction, data, n=10, cnv){
       names(betaValList) <- rownames(drug_prediction_filt_ord)
       names(pAdjListCantype) <- rownames(drug_prediction_filt_ord)
       
-      output<-sort(unlist(pValList))[1:30]
-      
-      output1<-sort(unlist(betaValList))[1:30]
-      
-      write.table(output, file='./MutationTestOutput_pVal.txt')
-      
-      write.table(output1, file='./MutationTestOutput_betaVal.txt')
-      
-      #Print the top associations
-      #return(output)
+      pVal<-unlist(pValList)
+      betaVal<-unlist(betaValList)
+      write.csv(cbind(pVal, betaVal), file='./MutationTestOutput_pVal_and_betaVal.csv')
     }
   }
 }

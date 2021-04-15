@@ -279,7 +279,7 @@ idwas<-function(drug_prediction, data, n=10, cnv){
       #_______________________________________
       pValList <- list()
       betaValList <- list()
-      for(i in 1:nrow(preds01a_filt_ord)){ #For each drug...
+      suppressWarnings(for(i in 1:nrow(preds01a_filt_ord)){ #For each drug...
         pValList[[i]] <- numeric()
         betaValList[[i]] <- numeric()
         for(j in 1:nrow(commonlyMutated))
@@ -288,7 +288,7 @@ idwas<-function(drug_prediction, data, n=10, cnv){
           pValList[[i]][[j]] <- thecoefs[2,4]
           betaValList[[i]][[j]] <- thecoefs[2,1]
         }
-      }
+      })
       
       #Get the adjusted p-value for each gene-drug combination, pull out the significant associations
       #and create a supplementary table that lists these for "predictable" drugs?.
@@ -450,7 +450,7 @@ idwas<-function(drug_prediction, data, n=10, cnv){
       #_______________________________________
       pValList <- list()
       betaValList <- list()
-      for(i in 1:nrow(drug_prediction_filt_ord)){ #For each drug...
+      suppressWarnings(for(i in 1:nrow(drug_prediction_filt_ord)){ #For each drug...
         pValList[[i]] <- numeric()
         betaValList[[i]] <- numeric()
         for(j in 1:nrow(commonlyMutated))
@@ -459,7 +459,7 @@ idwas<-function(drug_prediction, data, n=10, cnv){
           pValList[[i]][[j]] <- thecoefs[2,4]
           betaValList[[i]][[j]] <- thecoefs[2,1]
         }
-      }
+      })
       
       #Get the adjusted p-value for each gene-drug combination, pull out the significant associations
       #and create a supplementary table that lists these for "predictable" drugs?.

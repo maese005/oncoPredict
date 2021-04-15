@@ -42,7 +42,7 @@ colnames(drug_prediction)<-substring(cols, 3, nchar(cols))
 #Make sure this data is a data frame and that colnames() are samples.
 data<-as.data.frame(maf)
 samps<-data$Tumor_Sample_Barcode
-data$Tumor_Sample_Barcode<-substr(samps,1,nchar(samps)-12) #Make sure these sample ids are of the same form as your the sample ids in your prediction data.
+data$Tumor_Sample_Barcode<-substr(samps,1,nchar(samps)-12) #Make sure these sample ids are of the same form as the sample ids in your prediction data.
 
 #Determine the number of samples you want the CNVs to be amplified in. The default is 10.
 n=10

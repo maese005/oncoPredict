@@ -264,9 +264,10 @@ idwas<-function(drug_prediction, data, n=10, cnv){
 
       #If there are multiple genes, commonlyMutated will have dimensions.
       #Otherwise, it will be a vector. 
+      dim(commonlyMutated)
       #_______________________________________
       dim<-try(dim(as.vector(unlist(commonlyMutated))), silent=TRUE)
-      if(!is.integer(dim)){ #If we have a vector (one gene)...
+      if(length(dim)){ #If we have a vector (one gene)...
         #Get p values and beta values.
         pValList <- list()
         betaValList <- list()
@@ -335,8 +336,8 @@ idwas<-function(drug_prediction, data, n=10, cnv){
       pVal<-unlist(pValList)
       betaVal<-unlist(betaValList)
 
-            #If you only have one gene of interest...make sure the row names are appropriate (drug:gene)
-      if(!is.integer(dim)){ #If we have a vector (one gene)...
+      #If you only have one gene of interest...make sure the row names are appropriate (drug:gene)
+      if(length(dim)){ #If we have a vector (one gene)...
         final_data<-cbind(pVal, betaVal)
         rows<-rownames(final_data)
         gene<-names(which(commonMuts >= n))
@@ -471,7 +472,7 @@ idwas<-function(drug_prediction, data, n=10, cnv){
       #Otherwise, it will be a vector. 
       #_______________________________________
       dim<-try(dim(as.vector(unlist(commonlyMutated))), silent=TRUE)
-      if(!is.integer(dim)){ #If we have a vector (one gene)...
+      if(length(dim)){ #If we have a vector (one gene)...
         #Get p values and beta values.
         pValList <- list()
         betaValList <- list()
@@ -542,7 +543,7 @@ idwas<-function(drug_prediction, data, n=10, cnv){
       betaVal<-unlist(betaValList)
 
       #If you only have one gene of interest...make sure the row names are appropriate (drug:gene)
-      if(!is.integer(dim)){ #If we have a vector (one gene)...
+      if(length(dim)){ #If we have a vector (one gene)...
         final_data<-cbind(pVal, betaVal)
         rows<-rownames(final_data)
         gene<-names(which(commonMuts >= n))

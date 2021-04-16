@@ -33,6 +33,7 @@ An R package for drug response prediction and drug-gene association prediction. 
 ## Figure 1. 
 Flowchart displaying the 3 primary functionalities available through oncoPredict (calcPhenotype, GLDS, IDWAS) as well as the files generated from each function and parameters. Functions and files generated are bold.
 
-![Figure 1_ Overview of pRRophetic_plus (a flow chart or similar diagram to highlight the package’s abilities)   (2)](https://user-images.githubusercontent.com/62571435/114970073-4c969f80-9e3f-11eb-9388-651dccbd21fc.jpg)
+![Figure 1_ Overview of pRRophetic_plus (a flow chart or similar diagram to highlight the package’s abilities)   (2)](https://user-images.githubusercontent.com/62571435/114970102-5d471580-9e3f-11eb-8734-a5e40a3d7f41.jpg)
+
 
 

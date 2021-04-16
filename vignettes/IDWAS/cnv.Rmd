@@ -42,10 +42,9 @@ write.table(gbm.nocnv, file='./cnv.txt')
 Second, apply map_cnv() to map cnv data to genes. The mapped cnv data will be exported to your working directory as map.RData
 The mapping is accomplished by intersecting the gene with the overlapping CNV level. If the gene isn't fully captured by the CNV, an NA will be assigned.
 ```{r}
-#BiocManager::install(c("TxDb.Hsapiens.UCSC.hg19.knownGene", "org.Hs.eg.db", #"GenomicFeatures"))
-#BiocManager::install('maftools')
+#BiocManager::install(c("TxDb.Hsapiens.UCSC.hg19.knownGene", "org.Hs.eg.db", "GenomicFeatures", maftools))
 
-#library(maftools)
+library(maftools)
 library(TxDb.Hsapiens.UCSC.hg19.knownGene)
 library(org.Hs.eg.db)
 library(GenomicFeatures)

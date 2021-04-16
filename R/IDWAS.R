@@ -83,8 +83,7 @@ map_cnv<-function(Cnvs){
                     
 #'This function will test every drug against every CNV or somatic mutation for your cancer type.
 #'@param drug_prediction The drug prediction data. Must be a data frame.
-#'If you have cnv data, make sure rownames() are samples, and colnames() are drugs.
-#'If you have mutation data, make sure colnames() are samples and rownames() are drugs.
+#'rownames are samples, colnames are drugs. 
 #'Make sure sample names are of the same form as the sample names in your cnv or mutation data.
 #'e.g. if the rownames() are TCGA barcodes of the form TCGA-##-####-###, make sure your cnv/mutation data also uses samples in the form TCGA-##-####-###
 #'@param data The cnv or mutation data. Must be a data frame. 
@@ -108,6 +107,11 @@ idwas<-function(drug_prediction, data, n=10, cnv){
     stop("\nERROR: \"drug_prediction\" must be a data frame")
   if (class(data) != "data.frame")
     stop("\nERROR: \"data\" must be a data frame")
+  
+  if (cnv == FALSE){
+    drug_prediction<-t(drug_prediction) 
+    #This will make it such that rows are drugs and columns are samples. 
+  }
   
   #If TCGA is in my colnames() (as it would if you got cnv data from map_cnv() OR
   #if TCGA is in the column of your mutation data mutation$Tumor_Sample_Barcode, then you have TCGA samples

@@ -189,7 +189,8 @@ idwas<-function(drug_prediction, data, n=10, cnv){
       
       pVals <- sapply(allCors_hasAmps, function(item)return(item[[1]]))
       betas <- sapply(allCors_hasAmps, function(item)return(item[[2]]))
-      write.csv(cbind(pVals, betas), file='./CnvTestOutput_pVals_and_betas.csv')
+      write.csv(pVals, file='./CnvTestOutput_pVals.csv')
+      write.csv(betas, file='./CnvTestOutput_betas.csv')
 
     }else{
       #Obtain a list for the patients you have data for and initiate empty lists to fill.
@@ -400,11 +401,11 @@ idwas<-function(drug_prediction, data, n=10, cnv){
       hasAmps <- apply(MatCommonPats_amps, 1, function(theRow)return(sum(na.omit(theRow)) > n)) #Restrict analysis to CNAs that occur in 50 or more samples.
       
       allCors_hasAmps <- allCors[hasAmps]
-      
+    
       pVals <- sapply(allCors_hasAmps, function(item)return(item[[1]]))
       betas <- sapply(allCors_hasAmps, function(item)return(item[[2]]))
-      
-      write.csv(cbind(pVals,betas), file='./CnvTestOutput_pVals_and_betas.csv')
+      write.csv(pVals, file='./CnvTestOutput_pVals.csv')
+      write.csv(betas, file='./CnvTestOutput_betas.csv')
 
       #return((pVals)) # its going to be difficult to get at causality in a systematic way here....
       

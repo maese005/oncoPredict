@@ -186,12 +186,15 @@ idwas<-function(drug_prediction, data, n=10, cnv){
       hasAmps <- apply(MatCommonPats_amps, 1, function(theRow)return(sum(na.omit(theRow)) > n)) #Restrict analysis to CNAs that occur in 50 or more samples.
       
       allCors_hasAmps <- allCors[hasAmps]
+      if(length(allCors_hasAmps) == 0){
+        stop((paste("\nERROR: A gene was not mutated in at least", n, "patients. Recommend decreasing the n parameter.", sep=" ")))
+      }else{
+        pVals <- sapply(allCors_hasAmps, function(item)return(item[[1]]))
+        betas <- sapply(allCors_hasAmps, function(item)return(item[[2]]))
+        write.csv(pVals, file='./CnvTestOutput_pVals.csv')
+        write.csv(betas, file='./CnvTestOutput_betas.csv')
+      }
       
-      pVals <- sapply(allCors_hasAmps, function(item)return(item[[1]]))
-      betas <- sapply(allCors_hasAmps, function(item)return(item[[2]]))
-      write.csv(pVals, file='./CnvTestOutput_pVals.csv')
-      write.csv(betas, file='./CnvTestOutput_betas.csv')
-
     }else{
       #Obtain a list for the patients you have data for and initiate empty lists to fill.
       #_______________________________________
@@ -266,7 +269,7 @@ idwas<-function(drug_prediction, data, n=10, cnv){
         stop((paste("\nERROR: A gene was not mutated in at least", n, "patients. Recommend decreasing the n parameter.", sep=" ")))
       }
       commonlyMutated <- mutMat_nodups_ordFilt[which(commonMuts >= n), ] #Rows are genes that are mutated in n+ patients. Cols are patients. 
-
+      
       #If there are multiple genes, commonlyMutated will have dimensions.
       #Otherwise, it will be a vector. 
       dim(commonlyMutated)
@@ -278,11 +281,11 @@ idwas<-function(drug_prediction, data, n=10, cnv){
         betaValList <- list()
         
         suppressWarnings(for(i in 1:nrow(preds01a_filt_ord)){ #For each drug...
-        pValList[[i]] <- numeric()
-        betaValList[[i]] <- numeric()
-        thecoefs <- coef(summary(lm(preds01a_filt_ord[i,]~commonlyMutated)))
-        pValList[[i]]<- thecoefs[2,4]
-        betaValList[[i]] <- thecoefs[2,1]
+          pValList[[i]] <- numeric()
+          betaValList[[i]] <- numeric()
+          thecoefs <- coef(summary(lm(preds01a_filt_ord[i,]~commonlyMutated)))
+          pValList[[i]]<- thecoefs[2,4]
+          betaValList[[i]] <- thecoefs[2,1]
         })
         
         #Get the adjusted p-value for each gene-drug combination, pull out the significant associations
@@ -340,7 +343,7 @@ idwas<-function(drug_prediction, data, n=10, cnv){
       
       pVal<-unlist(pValList)
       betaVal<-unlist(betaValList)
-
+      
       #If you only have one gene of interest...make sure the row names are appropriate (drug:gene)
       if(length(dim)){ #If we have a vector (one gene)...
         final_data<-cbind(pVal, betaVal)
@@ -401,14 +404,14 @@ idwas<-function(drug_prediction, data, n=10, cnv){
       hasAmps <- apply(MatCommonPats_amps, 1, function(theRow)return(sum(na.omit(theRow)) > n)) #Restrict analysis to CNAs that occur in 50 or more samples.
       
       allCors_hasAmps <- allCors[hasAmps]
-    
-      pVals <- sapply(allCors_hasAmps, function(item)return(item[[1]]))
-      betas <- sapply(allCors_hasAmps, function(item)return(item[[2]]))
-      write.csv(pVals, file='./CnvTestOutput_pVals.csv')
-      write.csv(betas, file='./CnvTestOutput_betas.csv')
-
-      #return((pVals)) # its going to be difficult to get at causality in a systematic way here....
-      
+      if(length(allCors_hasAmps) == 0){
+        stop((paste("\nERROR: A gene was not mutated in at least", n, "patients. Recommend decreasing the n parameter.", sep=" ")))
+      }else{
+        pVals <- sapply(allCors_hasAmps, function(item)return(item[[1]]))
+        betas <- sapply(allCors_hasAmps, function(item)return(item[[2]]))
+        write.csv(pVals, file='./CnvTestOutput_pVals.csv')
+        write.csv(betas, file='./CnvTestOutput_betas.csv')
+      }
     } else {
       
       #Obtain a list for the patients you have data for and initiate empty lists to fill.
@@ -538,7 +541,7 @@ idwas<-function(drug_prediction, data, n=10, cnv){
           pAdjListCantype[[i]] <- padj
         }
       }
-  
+      
       names(sigPs) <- rownames(drug_prediction_filt_ord)
       names(pValList) <- rownames(drug_prediction_filt_ord)
       names(betaValList) <- rownames(drug_prediction_filt_ord)
@@ -546,7 +549,7 @@ idwas<-function(drug_prediction, data, n=10, cnv){
       
       pVal<-unlist(pValList)
       betaVal<-unlist(betaValList)
-
+      
       #If you only have one gene of interest...make sure the row names are appropriate (drug:gene)
       if(length(dim)){ #If we have a vector (one gene)...
         final_data<-cbind(pVal, betaVal)

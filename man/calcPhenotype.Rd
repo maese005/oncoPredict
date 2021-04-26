@@ -20,8 +20,7 @@ calcPhenotype(
   pcr = FALSE,
   report_pc = FALSE,
   rsq = FALSE,
-  cc = FALSE,
-  tpm = FALSE
+  cc = FALSE
 )
 }
 \arguments{
@@ -57,8 +56,6 @@ Options are 'TRUE' and 'FALSE'.}
 These are the correlations between a given gene of interest across all samples vs. a given drug response across samples.
 #'These correlations can be ranked to obtain a ranked correlation to determine highly correlated drug-gene associations.}
 
-\item{tpm}{Indicates if you want to convert your training data to TPM, which is recommended if your testing data is measured in TPM. This would be useful, for example, if you wish to use CTRP training data, which is measured in RPKM.
-Options are 'TRUE' and 'FALSE'.}
 }
 \value{
 .txt files will be saved into your working directory. Depending on the parameter specified, the .txt file outputs of this function can include the estimated phenotype/sensitivity predictions,

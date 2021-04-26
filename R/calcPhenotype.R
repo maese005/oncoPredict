@@ -252,12 +252,12 @@ calcPhenotype<-function (trainingExprData,
                          minNumSamples,
                          selection=1,
                          printOutput,
-                         removeLowVaringGenesFrom,
                          pcr=FALSE,
+                         removeLowVaringGenesFrom,
                          report_pc=FALSE,
+                         cc=FALSE,
                          percent=80,
-                         rsq=FALSE,
-                         cc=FALSE)
+                         rsq=FALSE)
 { 
 
   #Initiate empty lists for each data type you'd like to collect.

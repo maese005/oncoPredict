@@ -1,5 +1,5 @@
 Package: oncopredict
-Title: What the Package Does (One Line, Title Case)
+Title: Drug and Biomarker Discovery
 Version: 0.1.0   
 Authors@R: 
   c(person(given = "Danielle",

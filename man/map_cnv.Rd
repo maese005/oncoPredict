@@ -5,11 +5,9 @@
 \title{This function maps cnv data to genes.
 The output of this function is a .RData file called map.RData; this file contains theCnvQuantVecList_mat (rows are genes, and columns are samples) and tumorSamps (indicates which samples are primary tumor samples, 01A).}
 \usage{
-map_cnv(theRootDir, Cnvs)
+map_cnv(Cnvs)
 }
 \arguments{
-\item{theRootDir}{The directory/location in which you downloaded the data to.The output of this function will be saved to this directory.}
-
 \item{Cnvs}{The output obtained from the download() function (the cnv data); a table with colnames() Sample (named using the TCGA patient barcode), Chromosome, Start, End, Num_Probes, and Segment_Mean.}
 }
 \value{

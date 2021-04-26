@@ -140,6 +140,9 @@ cc=FALSE
 #Options are 'TRUE' and 'FALSE'.
 rsq=FALSE
 
+#Indicate percent variability (of the training data) you'd like principal components to reflect if pcr=TRUE. Default is .80
+percent=0.80
+
 #__________________________________________________________________________________________________________________________________
 #Run the calcPhenotype() function using the parameters you specified above.
 #__________________________________________________________________________________________________________________________________
@@ -156,6 +159,7 @@ calcPhenotype(trainingExprData=trainingExprData,
               pcr=pcr,
               report_pc=report_pc,
               rsq=rsq,
+              percent=percent,
               cc=cc)
 
 #If pcr is performed, you can view a drug's first two principal components using the code below. 

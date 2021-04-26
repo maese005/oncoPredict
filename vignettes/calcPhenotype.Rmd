@@ -155,12 +155,12 @@ calcPhenotype(trainingExprData=trainingExprData,
               minNumSamples=minNumSamples,
               selection=selection,
               printOutput=printOutput,
-              removeLowVaringGenesFrom=removeLowVaringGenesFrom,
               pcr=pcr,
+              removeLowVaringGenesFrom=removeLowVaringGenesFrom,
               report_pc=report_pc,
-              rsq=rsq,
+              cc=cc,
               percent=percent,
-              cc=cc)
+              rsq=rsq)
 
 #If pcr is performed, you can view a drug's first two principal components using the code below. 
 View(load('./calcPhenotype_Output/Vinblastine_1004.RData'))

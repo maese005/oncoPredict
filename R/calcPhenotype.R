@@ -226,14 +226,12 @@ summarizeGenesByMean <- function(exprMat)
 #'@removeLowVaringGenesFrom Determine method to remove low varying genes. Options are 'homogenizeData' and 'rawData'.
 #'@param report_pc Indicates whether you want to output the training principal components. Options are 'TRUE' and 'FALSE'.
 #'@param cc Indicate if you want correlation coefficients for biomarker discovery.
-#'@percent Indicate percent variability (of the training data) you'd like principal components to reflect if pcr=TRUE. Default is .80
+#'@param percent Indicate percent variability (of the training data) you'd like principal components to reflect if pcr=TRUE. Default is .80
 #'These are the correlations between a given gene of interest across all samples vs. a given drug response across samples.
-#'#'These correlations can be ranked to obtain a ranked correlation to determine highly correlated drug-gene associations.
+#'These correlations can be ranked to obtain a ranked correlation to determine highly correlated drug-gene associations.
 #'@param rsq Indicate whether or not you want to output the R^2 values for the data you train on from true and predicted values.
 #'These values represent the percentage in which the optimal model accounts for the variance in the training data.
 #'Options are 'TRUE' and 'FALSE'.
-#'@param percent If pcr=TRUE, determine percent of variance described by your principal components. 
-#'This will determine how many components to use for a given drug. Default is 80%. 
 #'@return .txt files will be saved into your working directory. Depending on the parameter specified, the .txt file outputs of this function can include the estimated phenotype/sensitivity predictions,
 #'the R^2 data, and the correlation coefficients. Principal components are stored as .RData files for each drug in your drug dataset.
 #'@import sva

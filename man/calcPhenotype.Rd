@@ -20,6 +20,7 @@ calcPhenotype(
   pcr = FALSE,
   report_pc = FALSE,
   rsq = FALSE,
+  percent = 0.80,
   cc = FALSE
 )
 }
@@ -42,6 +43,8 @@ calcPhenotype(
 
 \item{printOutput}{Set to FALSE to supress output.}
                     
+\item{percent}{Indicate percent variability (of the training data) you'd like principal components to reflect if pcr=TRUE. Default is .80}
+                
 \item{removeLowVaringGenesFrom}{Determine method to remove low varying genes. Options are 'homogenizeData' and 'rawData'.}
                     
 \item{pcr}{Indicates whether or not you'd like to use pcr for feature (gene) reduction. Options are 'TRUE' and 'FALSE'. If you indicate 'report_pc=TRUE' you need to also indicate 'pcr=TRUE'}

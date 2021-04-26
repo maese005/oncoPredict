@@ -43,7 +43,7 @@ Imports:
     readxl,
     parallel,
     ridge,
-    car,
+    car
 Suggests:
     knitr,
     rmarkdown,

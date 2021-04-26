@@ -16,12 +16,12 @@ calcPhenotype(
   minNumSamples,
   selection = 1,
   printOutput,
-  removeLowVaringGenesFrom,
   pcr = FALSE,
+  removeLowVaringGenesFrom,
   report_pc = FALSE,
-  rsq = FALSE,
+  cc = FALSE,
   percent = 0.80,
-  cc = FALSE
+  rsq = FALSE
 )
 }
 \arguments{
@@ -42,22 +42,20 @@ calcPhenotype(
 \item{selection}{How should duplicate gene ids be handled. Default is -1 which asks the user. 1 to summarize by their or 2 to disguard all duplicates.}
 
 \item{printOutput}{Set to FALSE to supress output.}
-                    
-\item{percent}{Indicate percent variability (of the training data) you'd like principal components to reflect if pcr=TRUE. Default is .80}
-                
-\item{removeLowVaringGenesFrom}{Determine method to remove low varying genes. Options are 'homogenizeData' and 'rawData'.}
-                    
+
 \item{pcr}{Indicates whether or not you'd like to use pcr for feature (gene) reduction. Options are 'TRUE' and 'FALSE'. If you indicate 'report_pc=TRUE' you need to also indicate 'pcr=TRUE'}
+  
+\item{removeLowVaringGenesFrom}{Determine method to remove low varying genes. Options are 'homogenizeData' and 'rawData'.}
 
 \item{report_pc}{Indicates whether you want to output the training principal components. Options are 'TRUE' and 'FALSE'.}
 
+\item{cc}{Indicate if you want correlation coefficients for biomarker discovery. These are the correlations between a given gene of interest across all samples vs. a given drug response across samples. These correlations can be ranked to obtain a ranked correlation to determine highly correlated drug-gene associations.}
+
+\item{percent}{Indicate percent variability (of the training data) you'd like principal components to reflect if pcr=TRUE. Default is .80}
+                                    
 \item{rsq}{Indicate whether or not you want to output the R^2 values for the data you train on from true and predicted values.
 These values represent the percentage in which the optimal model accounts for the variance in the training data.
 Options are 'TRUE' and 'FALSE'.}
-
-\item{cc}{Indicate if you want correlation coefficients for biomarker discovery.
-These are the correlations between a given gene of interest across all samples vs. a given drug response across samples.
-#'These correlations can be ranked to obtain a ranked correlation to determine highly correlated drug-gene associations.}
 
 }
 \value{

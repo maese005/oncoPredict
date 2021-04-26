@@ -226,6 +226,7 @@ summarizeGenesByMean <- function(exprMat)
 #'@removeLowVaringGenesFrom Determine method to remove low varying genes. Options are 'homogenizeData' and 'rawData'.
 #'@param report_pc Indicates whether you want to output the training principal components. Options are 'TRUE' and 'FALSE'.
 #'@param cc Indicate if you want correlation coefficients for biomarker discovery.
+#'@percent Indicate percent variability (of the training data) you'd like principal components to reflect if pcr=TRUE.
 #'These are the correlations between a given gene of interest across all samples vs. a given drug response across samples.
 #'#'These correlations can be ranked to obtain a ranked correlation to determine highly correlated drug-gene associations.
 #'@param rsq Indicate whether or not you want to output the R^2 values for the data you train on from true and predicted values.

@@ -12,3 +12,10 @@ import(readxl)
 import(parallel)
 import(ridge)
 import(car)
+importFrom('stats', 'coef', 'cor', 'cor.test',
+           'lm', 'median', 'model.matrix', 
+           'na.omit', 'p.adjust', 'prcomp',
+           'predict', 'sd', 'var')
+importFrom('utils', 'setTxtProgressBar', 
+           'txtProgressBar', 'write.csv', 
+           'write.table')

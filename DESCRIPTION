@@ -17,7 +17,9 @@ License: GPL-2
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1  
-VignetteBuilder: knitr, rmarkdown
+LazyData: true
+Suggests: knitr, markdown
+VignetteBuilder: knitr
 biocViews:
     sva,
     preprocessCore, 
@@ -37,8 +39,6 @@ Imports:
     ridge,
     car
 Suggests:
-    knitr,
-    rmarkdown,
     base,
     tidyverse,
     glmnet,

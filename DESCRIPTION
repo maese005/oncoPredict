@@ -10,22 +10,15 @@ Authors@R:
     person(given = "Robert",
            family = "Gruener",
            role = 'ctb',
-           email = "rgruener@uchicago.edu"),
-    person(given = "Weijie",
-           family = "Zhang",
-           role = 'ctb',
-           email = "zhan6385@umn.edu"),
-    person(given = "Paul",
-           family = "Geeleher",
-           role = 'ctb',
-           email = "paulgeeleher@gmail.com"))
+           email = "rgruener@uchicago.edu"))
 Description: Provides drug response prediction and biomarker discovery.
 Depends: R (>= 4.0)
 License: GPL-2
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.1.1    
+RoxygenNote: 7.1.1  
+VignetteBuilder: knitr, rmarkdown
 biocViews:
     sva,
     preprocessCore, 
@@ -45,8 +38,6 @@ Imports:
     ridge,
     car
 Suggests:
-    knitr,
-    rmarkdown,
     base,
     tidyverse,
     glmnet,

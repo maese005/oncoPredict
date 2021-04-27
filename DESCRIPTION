@@ -37,6 +37,8 @@ Imports:
     ridge,
     car
 Suggests:
+    knitr,
+    rmarkdown,
     base,
     tidyverse,
     glmnet,

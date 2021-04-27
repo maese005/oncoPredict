@@ -1,9 +1,9 @@
 ---
 title: "Drug response prediction"
-output: rmarkdown::html_document
+output: markdown::html_document
 vignette: >
-    %\VignetteIndexEntry{Introduction}
-    %\VignetteEngine{knitr::rmarkdown}
+    %\VignetteIndexEntry{calcPhenotype}
+    %\VignetteEngine{knitr::markdown}
     %\VignetteEncoding{UTF-8}
 ---
   

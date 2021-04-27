@@ -19,7 +19,7 @@ Authors@R:
            family = "Geeleher",
            role = 'ctb',
            email = "paulgeeleher@gmail.com"))
-Description: This packages provides drug response prediction and biomarker discovery.
+Description: Provides drug response prediction and biomarker discovery.
 Depends: R (>= 4.0.3)
 License: GPL-2
 Encoding: UTF-8

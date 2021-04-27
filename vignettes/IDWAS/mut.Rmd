@@ -1,9 +1,9 @@
 ---
 title: "Download somatic mutation data from GDC, then apply idwas()"
-output: rmarkdown::html_document
+output: markdown::html_document
 vignette: >
-  %\VignetteIndexEntry{Introduction}
-  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteIndexEntry{mut}
+  %\VignetteEngine{knitr::markdown}
   %\VignetteEncoding{UTF-8}
 ---
 

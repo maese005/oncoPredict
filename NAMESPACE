@@ -20,13 +20,9 @@ importFrom('utils', 'setTxtProgressBar',
            'txtProgressBar', 'write.csv', 
            'write.table')
 import(sva)
-import(preprocessCore) 
 import(stringr)
 import(biomaRt)
-import(EnsDb.Hsapiens.v75)
 import(genefilter)
-import(ensembldb)
-import(illuminaHumanv4.db)
 import(org.Hs.eg.db)
 import(GenomicFeatures)
 import(TxDb.Hsapiens.UCSC.hg19.knownGene)

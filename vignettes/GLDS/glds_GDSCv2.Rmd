@@ -1,9 +1,9 @@
 ---
 title: "Control for GLDS (general levels of drug sensitivity) in pre-clinical samples for biomarker discovery"
-output: rmarkdown::html_document
+output: markdown::html_document
 vignette: >
-  %\VignetteIndexEntry{Introduction}
-  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteIndexEntry{glds}
+  %\VignetteEngine{knitr::markdown}
   %\VignetteEncoding{UTF-8}
 ---
 

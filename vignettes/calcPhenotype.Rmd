@@ -141,7 +141,7 @@ cc=FALSE
 rsq=FALSE
 
 #Indicate percent variability (of the training data) you'd like principal components to reflect if pcr=TRUE. Default is .80
-percent=0.80
+percent=80
 
 #__________________________________________________________________________________________________________________________________
 #Run the calcPhenotype() function using the parameters you specified above.

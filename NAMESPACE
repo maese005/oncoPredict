@@ -19,3 +19,7 @@ importFrom('stats', 'coef', 'cor', 'cor.test',
 importFrom('utils', 'setTxtProgressBar', 
            'txtProgressBar', 'write.csv', 
            'write.table')
+importFrom('explvar', 'cv.glmnet', 'glmnet',
+           'ComBat', 'normalize.quantiles', 'TxDb.Hsapiens.UCSC.hg19.knownGene',
+           genes', 'toTable', 'org.Hs.egSYMBOL', 'GRanges', 'Rle', 'IRanges',
+           'subsetByOverlaps', 'countOverlaps', 'findOverlaps', ')

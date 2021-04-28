@@ -12,37 +12,54 @@ Authors@R:
            role = 'ctb',
            email = "rgruener@uchicago.edu"))
 Description: Provides drug response prediction and biomarker discovery.
-Depends: R (>= 4.0)
+VignetteBuilder: knitr
+Depends: R (>= 4.0), knitr
 License: GPL-2
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1  
 LazyData: true
 Suggests: knitr, markdown
-VignetteBuilder: knitr
 biocViews:
     sva,
     preprocessCore, 
     stringr,
     biomaRt,
-    EnsDb.Hsapiens.v75,
     genefilter,
-    ensembldb,
-    illuminaHumanv4.db,
     org.Hs.eg.db,
     GenomicFeatures,
     TxDb.Hsapiens.UCSC.hg19.knownGene,
-    TCGAbiolinks (>= 2.16.4)
+    TCGAbiolinks (>= 2.16.4),
+    GenomicRanges,
+    IRanges,
+    genefilter,
+    biomaRt,
+    ensembldb,
+    S4Vectors,
+    BiocGenerics
 Imports: 
     readxl,
     parallel,
     ridge,
-    car
+    car,
+    glmnet,
+    pls,
+    sva,
+    preprocessCore,
+    GenomicFeatures,
+    org.Hs.eg.db,
+    TxDb.Hsapiens.UCSC.hg19.knownGene,
+    GenomicRanges,
+    IRanges,
+    maftools,
+    genefilter,
+    biomaRt,
+    ensembldb,
+    S4Vectors,
+    BiocGenerics
 Suggests:
     base,
     tidyverse,
-    glmnet,
     downloader,
     caret,
-    gdata,
-    pls
+    gdata

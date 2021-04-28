@@ -51,11 +51,9 @@ calcPhenotype(
 
 \item{cc}{Indicate if you want correlation coefficients for biomarker discovery. These are the correlations between a given gene of interest across all samples vs. a given drug response across samples. These correlations can be ranked to obtain a ranked correlation to determine highly correlated drug-gene associations.}
 
-\item{percent}{Indicate percent variability (of the training data) you'd like principal components to reflect if pcr=TRUE. Default is 80 for 80%}
+\item{percent}{Indicate percent variability (of the training data) you'd like principal components to reflect if pcr=TRUE. Default is 80 for 80 percent}
                                     
-\item{rsq}{Indicate whether or not you want to output the R^2 values for the data you train on from true and predicted values.
-These values represent the percentage in which the optimal model accounts for the variance in the training data.
-Options are 'TRUE' and 'FALSE'.}
+\item{rsq}{Indicate whether or not you want to output the R^2 values for the data you train on from true and predicted values. These values represent the percentage in which the optimal model accounts for the variance in the training data. Options are 'TRUE' and 'FALSE'.}
 
 }
 \value{

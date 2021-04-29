@@ -1,9 +1,10 @@
 ---
 title: "Control for GLDS (general levels of drug sensitivity) in pre-clinical samples for biomarker discovery"
-output: markdown::html_document
+author: "Danielle Maeser"
+output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{glds}
-  %\VignetteEngine{knitr::markdown}
+  %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
 

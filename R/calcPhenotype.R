@@ -223,7 +223,7 @@ summarizeGenesByMean <- function(exprMat)
 #'@param selection How should duplicate gene ids be handled. Default is -1 which asks the user. 1 to summarize by their or 2 to disguard all duplicates.
 #'@param printOutput Set to FALSE to supress output.
 #'@param pcr Indicates whether or not you'd like to use pcr for feature (gene) reduction. Options are 'TRUE' and 'FALSE'. If you indicate 'report_pc=TRUE' you need to also indicate 'pcr=TRUE'
-#'@removeLowVaringGenesFrom Determine method to remove low varying genes. Options are 'homogenizeData' and 'rawData'.
+#'@param removeLowVaringGenesFrom Determine method to remove low varying genes. Options are 'homogenizeData' and 'rawData'.
 #'@param report_pc Indicates whether you want to output the training principal components. Options are 'TRUE' and 'FALSE'.
 #'@param cc Indicate if you want correlation coefficients for biomarker discovery.
 #'@param percent Indicate percent variability (of the training data) you'd like principal components to reflect if pcr=TRUE. Default is 80 for 80%

@@ -1,10 +1,11 @@
 ---
 title: "Drug response prediction"
-output: markdown::html_document
+author: "Danielle Maeser"
+output: rmarkdown::html_vignette
 vignette: >
-    %\VignetteIndexEntry{calcPhenotype}
-    %\VignetteEngine{knitr::markdown}
-    %\VignetteEncoding{UTF-8}
+  %\VignetteIndexEntry{calcPhenotype}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 ---
   
 ```{r, include = FALSE}

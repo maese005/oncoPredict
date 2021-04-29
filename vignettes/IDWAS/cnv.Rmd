@@ -1,9 +1,10 @@
 ---
 title: "Download CNV data from GDC, then apply map_cnv() and idwas()"
-output: markdown::html_document
+author: "Danielle Maeser"
+output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{cnv}
-  %\VignetteEngine{knitr::markdown}
+  %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
 

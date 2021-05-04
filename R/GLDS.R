@@ -4,6 +4,11 @@
 #'@return A matrix of drug sensitivity scores without missing values. rownames() are samples, and colnames are drugs.
 #'@keywords Drug response prediction.
 #'@import glmnet
+#'@import stats
+#'@import car
+#'@import maftools
+#'@import utils
+#'@import readxl
 #'@export
 completeMatrix <- function(senMat, nPerms=50)
 {
@@ -99,46 +104,50 @@ completeMatrix <- function(senMat, nPerms=50)
 #'This function determines drug-gene associations for pre-clinical data.
 #'@param drugMat A matrix of drug sensitivity data. rownames() are pre-clinical samples, and colnames() are drug names.
 #'@param drugRelatedness A matrix in which column 1 contains a list of compounds, and column 2 contains a list of their corresponding target pathways. Given the subjective nature of
-#'drug classification, please ensure these pathways are as specific as possible for accurate results. 
+#'drug classification, please ensure these pathways are as specific as possible for accurate results.
 #'@param markerMat A matrix containing the data for which you are looking for an association with drug sensitivity (e.g. a matrix of somatic mutation data). rownames() are marker names (e.g. gene names), and colnames() are samples.
 #'@param threshold Determine the correlation coefficient. Drugs with a correlation coefficient greater than or equal to this number with the drug under scrutiny will be removed from the negative control group.
 #'The default is 0.7
 #'@param minMuts The minimum number of non-zero entries required so that a p-value can be calculated (e.g. how many somatic mutations must be present). The default is 5.
 #'@param additionalCovariateMatrix A matrix containing covariates to be fit in the drug biomarker association models. This could be, for example, tissue of origin or cancer type. Columns are sample names. The default is NULL.
 #'@param expression A matrix of expression data. rownames() are genes, and colnames() are the same pre-clinical samples as those in the drugMat (also in the same order).
-#'The default is NULL. If expression data is provided, a gene signature will be obtained. 
+#'The default is NULL. If expression data is provided, a gene signature will be obtained.
+#'@import stats
+#'@import utils
+#'@import ridge
+#'@import readxl
 #'@export
 glds <- function(drugMat, drugRelatedness, markerMat, minMuts=5, additionalCovariateMatrix=NULL, expression=NULL, threshold=0.7){
-  
+
   results_gldsPs <- list()
   results_gldsBetas <- list()
   results_naivePs <- list()
-  results_naiveBetas <- list()  
+  results_naiveBetas <- list()
   numDrugs <- ncol(drugMat)
   pairCor <- cor(drugMat, method="spearman")
   comNames <- colnames(markerMat)[colnames(markerMat) %in% rownames(drugMat)] # cell lines for which we have both mutation and drug data....
-  
+
   if(!is.null(additionalCovariateMatrix)) # if additional co variate matrix was provided, then also subset to those samples
   {
     comNames <- comNames[comNames %in% rownames(additionalCovariateMatrix)]
   }
-  
+
   pb <- txtProgressBar(min = 0, max = ncol(drugMat), style = 3) # create progress bar
-  
+
   #drugMat=drugMat[,1:20]
 
   for(i in 1:ncol(drugMat)){
     #index<-(match(colnames(drugMat)[6], drugRelatedness[,1]))
-    
+
     index<-try(match(colnames(drugMat)[i], drugRelatedness[,1]), silent=TRUE)
     if (is.na(index)){
-      drugMat = drugMat[,-i] #Remove that column/drug from the matrix. 
+      drugMat = drugMat[,-i] #Remove that column/drug from the matrix.
       cat(paste('\n', colnames(drugMat)[i], 'is skipped because it is not included in your drug relatedness info'))
     }else{
       #Calculate 10 PCs on non-related sets of drugs....
       categoryThisDrug<-(drugRelatedness[,2])[index] #The MOA of the drug under scrutiny.
       thisDrug<-(drugRelatedness[,1])[index] #The drug under scrutiny.
-      
+
       #Identify all the other drugs in this dataset that are not part of this same drug category...
       negControlDrugs<-c() #Drugs that don't have the same MOA as the drug under scrutiny.
       categoryThisDrug_vec<-scan(text=categoryThisDrug, what="", quiet=TRUE) #The MOA string for the drug of interest will be broken up into elements (each element is a word).
@@ -149,21 +158,21 @@ glds <- function(drugMat, drugRelatedness, markerMat, minMuts=5, additionalCovar
           negControlDrugs[k]<-(drugRelatedness[,1])[k]
         }
       }
-      
+
       #indices<-which(drugRelatedness[,2] != categoryThisDrug) #Indices of categories that aren't the category of the current drug.
       #negControlDrugs<-unique((drugRelatedness[,1])[indices])
-            
+
       mags<-sort(abs(pairCor[, colnames(drugMat)[i]]), decreasing=FALSE) >= threshold
       pairwiseCorNear<-names(which(mags == "TRUE"))
 
       negControlDrugs <- setdiff(negControlDrugs, pairwiseCorNear) # remove very highly correlated drugs from "negative controls"
-      
+
       indices<-match(negControlDrugs, colnames(drugMat))
       indices<-indices[!is.na(indices)]
       controlPCsAll <- prcomp(drugMat[, indices])$x
 
       controlPCsAllCom <- controlPCsAll[comNames, ]
-    
+
       #This section determines the gene signature.
       if(!is.null(expression)){ #If expression matrix was provided, then gene signatures can also be obtained...
         spearCorList<-list()
@@ -173,15 +182,15 @@ glds <- function(drugMat, drugRelatedness, markerMat, minMuts=5, additionalCovar
             spearCorList[[p]][g]<-cor.test(controlPCsAll[exprComSamples,p],
                                            expression[g,exprComSamples],
                                            method='spearman')$p.value
-            }
-          names(spearCorList[[p]])<-rownames(expression)
           }
-        mdrExprGenesList[[j]] <- unique(as.character(unique(sapply(spearCorList, function(vec)return(names(sort(vec)[1:50])))))) #The full list of genes for this drug.
-        names(mdrExprGenesList)<-colnames(drugMat)  
-        controlGeneFrequency <- table(do.call(c, mdrExprGenesList)) #How often is each gene selected as a negative control	 
-        alwaysControlGene <- names(controlGeneFrequency[controlGeneFrequency == ncol(drugMat)])	
+          names(spearCorList[[p]])<-rownames(expression)
         }
-      
+        mdrExprGenesList[[j]] <- unique(as.character(unique(sapply(spearCorList, function(vec)return(names(sort(vec)[1:50])))))) #The full list of genes for this drug.
+        names(mdrExprGenesList)<-colnames(drugMat)
+        controlGeneFrequency <- table(do.call(c, mdrExprGenesList)) #How often is each gene selected as a negative control
+        alwaysControlGene <- names(controlGeneFrequency[controlGeneFrequency == ncol(drugMat)])
+      }
+
       # Calculate the P-values and beta values for each marker for this drug, controlling for GLDS and not controlling for GLDS
       results_gldsPs[[i]] <- numeric()
       results_gldsPs[[i]] <- rep(NA, nrow(markerMat))
@@ -199,7 +208,7 @@ glds <- function(drugMat, drugRelatedness, markerMat, minMuts=5, additionalCovar
             theCoefs <- coef(summary(lm(drugMat[comNames, i]~markerMat[j, comNames])))
             results_naivePs[[i]][j] <- theCoefs[2, 4]
             results_naiveBetas[[i]][j] <- theCoefs[2, 1]
-            
+
             theCoefs <- coef(summary(lm(drugMat[comNames, i]~markerMat[j, comNames]+controlPCsAllCom[,1:10])))
             results_gldsPs[[i]][j] <- theCoefs[2, 4]
             results_gldsBetas[[i]][j] <- theCoefs[2, 1]
@@ -209,7 +218,7 @@ glds <- function(drugMat, drugRelatedness, markerMat, minMuts=5, additionalCovar
             theCoefs <- coef(summary(lm(drugMat[comNames, i]~markerMat[j, comNames]+additionalCovariateMatrix[comNames,])))
             results_naivePs[[i]][j] <- theCoefs[2, 4]
             results_naiveBetas[[i]][j] <- theCoefs[2, 1]
-            
+
             theCoefs <- coef(summary(lm(drugMat[comNames, i]~markerMat[j, comNames]+controlPCsAllCom[,1:10]+additionalCovariateMatrix[comNames,])))
             results_gldsPs[[i]][j] <- theCoefs[2, 4]
             results_gldsBetas[[i]][j] <- theCoefs[2, 1]
@@ -221,28 +230,28 @@ glds <- function(drugMat, drugRelatedness, markerMat, minMuts=5, additionalCovar
       names(results_naivePs[[i]]) <- rownames(markerMat)
       names(results_gldsBetas[[i]]) <- rownames(markerMat)
       names(results_naiveBetas[[i]]) <- rownames(markerMat)
-      
+
       setTxtProgressBar(pb, i) # update progress bar
-      
+
     }
   }
-    
-    close(pb)
-    names(results_gldsPs) <- colnames(drugMat)
-    names(results_naivePs) <- colnames(drugMat)
-    names(results_gldsBetas) <- colnames(drugMat)
-    names(results_naiveBetas) <- colnames(drugMat)
-    
-    outList <- list(pGlds=results_gldsPs, betaGlds=results_gldsBetas, pNaive=results_naivePs, betaNaive=results_naiveBetas)
-    
-    #return(outList) 
-    write.csv(results_gldsPs, file="./gldsPs.csv", row.names = TRUE, col.names = TRUE)
-    write.csv(results_naivePs, file="./naivePs.csv", row.names = TRUE, col.names = TRUE)
-    write.csv(results_gldsBetas, file="./gldsBetas.csv", row.names = TRUE, col.names = TRUE)
-    write.csv(results_naiveBetas, file="./naiveBetas.csv", row.names = TRUE, col.names = TRUE)
-                                                        
-    if(!is.null(additionalCovariateMatrix)){
+
+  close(pb)
+  names(results_gldsPs) <- colnames(drugMat)
+  names(results_naivePs) <- colnames(drugMat)
+  names(results_gldsBetas) <- colnames(drugMat)
+  names(results_naiveBetas) <- colnames(drugMat)
+
+  outList <- list(pGlds=results_gldsPs, betaGlds=results_gldsBetas, pNaive=results_naivePs, betaNaive=results_naiveBetas)
+
+  #return(outList)
+  write.csv(results_gldsPs, file="./gldsPs.csv", row.names = TRUE, col.names = TRUE)
+  write.csv(results_naivePs, file="./naivePs.csv", row.names = TRUE, col.names = TRUE)
+  write.csv(results_gldsBetas, file="./gldsBetas.csv", row.names = TRUE, col.names = TRUE)
+  write.csv(results_naiveBetas, file="./naiveBetas.csv", row.names = TRUE, col.names = TRUE)
+
+  if(!is.null(additionalCovariateMatrix)){
     write.csv(alwaysControlGene, file="./gene_signature.txt")
   }
-    
+
 }

@@ -16,7 +16,7 @@ An R package for drug response prediction and drug-gene association prediction. 
       + **mut.Rmd** Example as to how to download stomatic mutation data from the GDC database, then apply idwas(). 
 
   * **GLDS** This directory contains examples of GLDS code application for pre-clinical drug-gene association prediction. 
-      + **glds_GDSC.Rmd** Example of GLDS application to GDSC data. 
+      + **glds_GDSC.Rmd** Example of GLDS application to GDSC data. Note: in order to run this code, you must download GDSCv2 data provided in the OSF. 
 
   * **calcPhenotype.Rmd** Example of calcPhenotype() application.
 

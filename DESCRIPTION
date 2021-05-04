@@ -1,24 +1,23 @@
-Package: oncopredict
+Package: oncoPredict
 Title: Drug and Biomarker Discovery
-Version: 0.1.0   
+Version: 0.0.0.9000
 Authors@R: 
-  c(person(given = "Danielle",
+    c(person(given = "Danielle",
            family = "Maeser",
            role = c("aut", "cre"),
            email = "maese005@umn.edu",
            comment = c(ORCID = "0000-0002-3890-887X")),
-    person(given = "Robert",
-           family = "Gruener",
+      person(given = 'Robert',
+           family = 'Gruener',
            role = 'ctb',
-           email = "rgruener@uchicago.edu"))
+           email = 'rgruener@chicago.edu'))
 Description: Provides drug response prediction and biomarker discovery.
-VignetteBuilder: knitr
-Depends: R (>= 4.0)
 License: GPL-2
 Encoding: UTF-8
-Roxygen: list(rmarkdown = TRUE)
+LazyData: true
+Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1  
-Suggests: knitr, rmarkdown
+Depends: R (>= 3.5.0)
 biocViews:
     sva,
     preprocessCore, 
@@ -28,17 +27,14 @@ biocViews:
     org.Hs.eg.db,
     GenomicFeatures,
     TxDb.Hsapiens.UCSC.hg19.knownGene,
-    TCGAbiolinks (>= 2.16.4),
     GenomicRanges,
     IRanges,
     genefilter,
-    biomaRt,
-    ensembldb,
     S4Vectors,
     BiocGenerics,
-    GenomicDataCommons
+    GenomicDataCommons,
+    TCGAbiolinks
 Imports: 
-    readxl,
     parallel,
     ridge,
     car,
@@ -53,15 +49,16 @@ Imports:
     IRanges,
     maftools,
     genefilter,
-    biomaRt,
-    ensembldb,
     S4Vectors,
     BiocGenerics,
-    TCGAbiolinks (>= 2.16.4),
-    GenomicDataCommons
-Suggests:
-    base,
-    tidyverse,
-    downloader,
+    GenomicDataCommons,
+    gdata,
     caret,
-    gdata
+    tidyverse
+Suggests:
+    knitr, 
+    rmarkdown,
+    TCGAbiolinks,
+    readxl,
+    qpdf
+VignetteBuilder: knitr

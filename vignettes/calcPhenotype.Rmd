@@ -38,11 +38,15 @@ set.seed(12345)
 
 #GDSC2 Data
 #Read GDSC training expression data. rownames() are genes and colnames() are samples.
-trainingExprData=readRDS(file='GDSC2_Expr.rds')
+#trainingExprData=readRDS(file='GDSC2_Expr.rds')
 #dim(trainingExprData) #17419 805
 #Read GDSC2 response data. rownames() are samples, colnames() are drugs. 
 trainingPtype = readRDS(file = "GDSC2_Res.rds")
 #dim(trainingPtype) #805 198
+
+#GDSC2 expression data for the vignette (it's a much smaller sampling)
+trainingExprData=readRDS(file='GDSC2_Expr_short.rds')
+#dim(trainingExprData) #1000 400
 
 #IMPORTANT note: here I do e^IC50 since the IC50s are actual ln values/log transformed already, and the calcPhenotype function Paul #has will do a power transformation (I assumed it would be better to not have both transformations)
 trainingPtype<-exp(trainingPtype) 
@@ -59,7 +63,7 @@ trainingPtype<-exp(trainingPtype)
 #Test data. 
 #_______________________________________________________
 #Read testing data as a matrix with rownames() as genes and colnames() as samples.
-testExprData=as.matrix(read.table('prostate test data.txt', header=TRUE, row.names=1))
+testExprData=as.matrix(read.table('prostate_test_data.txt', header=TRUE, row.names=1))
 dim(testExprData) #20530 550
 
 #Additional parameters. 

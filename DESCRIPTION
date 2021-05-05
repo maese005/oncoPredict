@@ -1,0 +1,63 @@
+Package: oncoPredict
+Title: Drug and Biomarker Discovery
+Version: 0.0.0.9000
+Authors@R: 
+    c(person(given = "Danielle",
+           family = "Maeser",
+           role = c("aut", "cre"),
+           email = "maese005@umn.edu",
+           comment = c(ORCID = "0000-0002-3890-887X")),
+      person(given = 'Robert',
+           family = 'Gruener',
+           role = 'ctb',
+           email = 'rgruener@chicago.edu'))
+Description: Provides drug response prediction and biomarker discovery.
+License: GPL-2
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.1  
+Depends: R (>= 3.5.0)
+biocViews:
+    sva,
+    preprocessCore, 
+    stringr,
+    biomaRt,
+    genefilter,
+    org.Hs.eg.db,
+    GenomicFeatures,
+    TxDb.Hsapiens.UCSC.hg19.knownGene,
+    GenomicRanges,
+    IRanges,
+    genefilter,
+    S4Vectors,
+    BiocGenerics,
+    GenomicDataCommons,
+    TCGAbiolinks
+Imports: 
+    parallel,
+    ridge,
+    car,
+    glmnet,
+    pls,
+    sva,
+    preprocessCore,
+    GenomicFeatures,
+    org.Hs.eg.db,
+    TxDb.Hsapiens.UCSC.hg19.knownGene,
+    GenomicRanges,
+    IRanges,
+    maftools,
+    genefilter,
+    S4Vectors,
+    BiocGenerics,
+    GenomicDataCommons,
+    gdata,
+    caret,
+    tidyverse,
+    readxl,
+    TCGAbiolinks
+Suggests:
+    knitr, 
+    rmarkdown
+VignetteBuilder: knitr

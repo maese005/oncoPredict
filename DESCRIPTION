@@ -54,11 +54,10 @@ Imports:
     GenomicDataCommons,
     gdata,
     caret,
-    tidyverse
+    tidyverse,
+    readxl,
+    TCGAbiolinks
 Suggests:
     knitr, 
-    rmarkdown,
-    TCGAbiolinks,
-    readxl,
-    qpdf
+    rmarkdown
 VignetteBuilder: knitr

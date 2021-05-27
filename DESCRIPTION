@@ -11,7 +11,7 @@ Authors@R:
            family = 'Gruener',
            role = 'ctb',
            email = 'rgruener@chicago.edu'))
-Description: Provides drug response prediction and biomarker discovery.
+Description: This package bridges in vitro drug screening with in vivo drug and biomarker discovery. Specifically, it predicts in vivo or cancer patient drug response and biomarkers to enrich for response from cell line screening data. It builds model using ridge regression, and it enables biomarker discovery by imputing drug response in large cancer molecular datasets. It also enables drug specific biomarker identification by correcting for general level of drug sensitivity shared among the population. 
 License: GPL-2
 Encoding: UTF-8
 LazyData: true

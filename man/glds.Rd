@@ -32,6 +32,9 @@ The default is NULL. If expression data is provided, a gene signature will be ob
 \item{threshold}{Determine the correlation coefficient. Drugs with a correlation coefficient greater than or equal to this number with the drug under scrutiny will be removed from the negative control group.
 The default is 0.7}
 }
+\value{
+Naive and corrected p-values and beta-values, as well as a gene signature 
+}
 \description{
 This function determines drug-gene associations for pre-clinical data.
 }

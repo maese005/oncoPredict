@@ -12,6 +12,11 @@ summarizeGenesByMean(exprMat)
 \value{
 A gene expression matrix that does not contain duplicate genes.
 }
+\examples{
+\donttest{
+try(summarizeGenesByMean(exprMat))
+}
+}
 \description{
 This function takes a gene expression matrix and if duplicate genes are measured, summarizes them by their means.
 }

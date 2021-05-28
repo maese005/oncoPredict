@@ -15,6 +15,11 @@ doVariableSelection(exprMat, removeLowVaryingGenes = 0.2)
 \value{
 A vector of row/genes to keep.
 }
+\examples{
+\donttest{
+try(doVariableSelection(exprMat, removeLowVaryingGenes = 0.2))
+}
+}
 \description{
 This function performs variable selection on gene expression matrices.
 It can, for instance, remove genes with low variation.

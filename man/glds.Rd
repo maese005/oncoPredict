@@ -35,6 +35,17 @@ The default is 0.7}
 \value{
 Naive and corrected p-values and beta-values, as well as a gene signature 
 }
+\examples{
+\donttest{try(glds(
+drugMat,
+drugRelatedness,
+markerMat,
+minMuts = 5,
+additionalCovariateMatrix = NULL,
+expression = NULL,
+threshold = 0.7))
+}
+}
 \description{
 This function determines drug-gene associations for pre-clinical data.
 }

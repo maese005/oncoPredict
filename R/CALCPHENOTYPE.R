@@ -43,23 +43,23 @@ homogenizeData<-function (testExprMat, trainExprMat, batchCorrect = "eb", select
   }
   else {
     if (printOutput)
-      cat(paste("\n", sum(rownames(trainExprMat) %in% rownames(testExprMat)), " gene identifiers overlap between the supplied expression matrices... \n", paste = ""))
+      message(paste("\n", sum(rownames(trainExprMat) %in% rownames(testExprMat)), " gene identifiers overlap between the supplied expression matrices... \n", paste = ""))
   }
 
   #If there are duplicate gene names, give the option of removing them or summarizing them by their mean.
   if ((sum(duplicated(rownames(trainExprMat))) > 0) || sum(sum(duplicated(rownames(testExprMat))) > 0)) {
     if (selection == -1) {
-      cat("\nExpression matrix contain duplicated gene identifiers (i.e. duplicate rownames()), how would you like to proceed:")
-      cat("\n1. Summarize duplicated gene ids by their mean value (acceptable in most cases)")
-      cat("\n2. Disguard all duplicated genes (recommended if unsure)")
-      cat("\n3. Abort (if you want to deal with duplicate genes ids manually)\n")
+      message("\nExpression matrix contain duplicated gene identifiers (i.e. duplicate rownames()), how would you like to proceed:")
+      message("\n1. Summarize duplicated gene ids by their mean value (acceptable in most cases)")
+      message("\n2. Disguard all duplicated genes (recommended if unsure)")
+      message("\n3. Abort (if you want to deal with duplicate genes ids manually)\n")
     }
     while (is.na(selection) | selection <= 0 | selection > 3) {
       selection <- readline("Selection: ")
       selection <- ifelse(grepl("[^1-3.]", selection), -1, as.numeric(selection))
     }
 
-    cat("\n")
+    message("\n")
 
     if (selection == 1) #Summarize duplicates by their mean.
     {
@@ -327,7 +327,7 @@ calcPhenotype<-function (trainingExprData,
       keepRows <- doVariableSelection(cbind(homData$test, homData$train), removeLowVaryingGenes = removeLowVaryingGenes)
 
       numberGenesRemoved <- nrow(homData$test) - length(keepRows)
-      if (printOutput) cat(paste("\n", numberGenesRemoved, "low variabilty genes filtered."));
+      if (printOutput) message(paste("\n", numberGenesRemoved, "low variabilty genes filtered."));
     }
     else if (removeLowVaringGenesFrom == "rawData") { #If we are filtering based on the raw data i.e. the intersection of the things filtered from both datasets.
       evaluabeGenes <- rownames(homData$test)
@@ -336,7 +336,7 @@ calcPhenotype<-function (trainingExprData,
       keepRows <- intersect(keepRowsTrain, keepRowsTest)
       numberGenesRemoved <- nrow(homData$test) - length(keepRows)
       if (printOutput)
-        cat(paste("\n", numberGenesRemoved, "low variabilty genes filtered."));
+        message(paste("\n", numberGenesRemoved, "low variabilty genes filtered."));
     }
   }
 
@@ -353,7 +353,7 @@ calcPhenotype<-function (trainingExprData,
 
     if (length(samps) == 1){ #Make sure training data has more than just 1 sample. If the drug has one sample, it will be skipped.
       drugs = drugs[-a]
-      cat(paste("\n", drugs[a], "is skipped due to insufficient cell lines to fit the model."))
+      message(paste("\n", drugs[a], "is skipped due to insufficient cell lines to fit the model."))
       next
     } else {
 
@@ -410,7 +410,7 @@ calcPhenotype<-function (trainingExprData,
         trainFrame<-try(data.frame(Resp=train_y, train_x), silent = TRUE)
         if (dim(trainFrame)[1] == 1){ #Make sure you have more than 1 sample.
           drugs = drugs[-a]
-          cat(paste("\n", drugs[a], "is skipped due to insufficient cell lines to fit the model."))
+          message(paste("\n", drugs[a], "is skipped due to insufficient cell lines to fit the model."))
           next
         } else {
 
@@ -421,7 +421,7 @@ calcPhenotype<-function (trainingExprData,
 
           #vs[a]<-ncomp
 
-          if(printOutput) cat("\nCalculating predicted phenotype using pcr...")
+          if(printOutput) message("\nCalculating predicted phenotype using pcr...")
           preds<-predict(pcr_model, newdata=test_x, ncomp=ncomp)
 
           #You can compute an R^2 value for the data you train on from true and predicted values.
@@ -430,7 +430,7 @@ calcPhenotype<-function (trainingExprData,
           if (rsq){
 
             if (dim(train_x)[1] < 4){ #The code will result in an error if you have 3 samples (which is enough for the model fitting but not when you do a 70/30% split)...
-              cat(paste("\n", drugs[a], 'is skipped for R^2 analysis'))
+              message(paste("\n", drugs[a], 'is skipped for R^2 analysis'))
             }else{
 
               #trainFrame<-data.frame(Resp=train_y, train_x)
@@ -479,7 +479,7 @@ calcPhenotype<-function (trainingExprData,
 
               pcr_pred<-predict(pcr_model, test_x, ncomp=ncomp)
 
-              if (printOutput) cat("\nCalculating R^2...")
+              if (printOutput) message("\nCalculating R^2...")
               sst<-sum((test_y - mean(test_y))^2) #Compute the sum of squares total.
               sse<-sum((pcr_pred - test_y)^2) #Compute the sum of squares error.
               rsq_value<-1 - sse/sst #Compute the rsq value.
@@ -488,7 +488,7 @@ calcPhenotype<-function (trainingExprData,
         }
 
         if (report_pc){
-          if (printOutput) cat("\nObtaining principal components...")
+          if (printOutput) message("\nObtaining principal components...")
           pcs<-coef(pcr_model, comps = ncomp) #comps: numeric, which components to return.
           dir.create("./calcPhenotype_Output")
           path<-paste('./calcPhenotype_Output/', drugs[a], '.RData', sep="")
@@ -499,7 +499,7 @@ calcPhenotype<-function (trainingExprData,
 
         #Create the ridge regression model on our training data to predict for our actual testing data without pcr.
         #_______________________________________________________________
-        if(printOutput) cat("\nFitting Ridge Regression model...");
+        if(printOutput) message("\nFitting Ridge Regression model...");
 
         expression<-(t(homData$train)[samps,keepRows]) #samps represent the cell lines that have been filtered, keepRows represents the genes.
 
@@ -532,11 +532,11 @@ calcPhenotype<-function (trainingExprData,
         trainFrame<-try(data.frame(Resp=trainingPtype4, expression), silent = TRUE)
         if (dim(trainFrame)[1] == 1){ #Make sure you have more than 1 sample.
           drugs = drugs[-a]
-          cat(paste("\n", drugs[a], "is skipped due to insufficient cell lines to fit the model."))
+          message(paste("\n", drugs[a], "is skipped due to insufficient cell lines to fit the model."))
           next
         } else {
 
-          if(printOutput) cat("\nCalculating predicted phenotype...")
+          if(printOutput) message("\nCalculating predicted phenotype...")
 
           rrModel<-linearRidge(Resp ~., data=trainFrame)
 
@@ -549,7 +549,7 @@ calcPhenotype<-function (trainingExprData,
 
             if (dim(expression)[1] < 4){ #The code will result in an error if you have 3 samples...this makes sure you have more than 3 samples.
               #It results in an error because there is a 70/30% split of training data.
-              cat(paste("\n", drugs[a], 'is skipped for R^2 analysis'))
+              message(paste("\n", drugs[a], 'is skipped for R^2 analysis'))
             } else {
               expression<-(cbind(expression, trainingPtype4))
               dt<-sort(sample(nrow(expression), nrow(expression)*.7)) #sample() randomly picks 70% of rows/samples from the dataset. It samples without replacement.
@@ -594,7 +594,7 @@ calcPhenotype<-function (trainingExprData,
 
               pred<-predict(rrModel, newdata=testFrame)
 
-              if(printOutput) cat("\nCalculating R^2...")
+              if(printOutput) message("\nCalculating R^2...")
 
               sst<-sum((test_y - mean(test_y))^2) #Compute the sum of squares total.
               sse<-sum((pred - test_y)^2) #Compute the sum of squares error.
@@ -620,7 +620,7 @@ calcPhenotype<-function (trainingExprData,
           stop('ERROR: pcr must equal FALSE in order to compute correlations') #It doesn't make sense to compute correlations when the features have changed from genes to pcs.
         }
 
-        if(printOutput) cat("\nCalculating correlation coefficients...") #This is only relevant if you aren't using pcr.
+        if(printOutput) message("\nCalculating correlation coefficients...") #This is only relevant if you aren't using pcr.
 
         cors_vec<-c()
         matrix<-homData$test[keepRows,] #Matrix of genes x cell lines/cosmic ids.
@@ -634,7 +634,7 @@ calcPhenotype<-function (trainingExprData,
         #names(ordered_cor)<-ordered_genes
       }
 
-      if(printOutput) cat(paste("\nDone making prediction for drug", a, "of", ncol(trainingPtype)))
+      if(printOutput) message(paste("\nDone making prediction for drug", a, "of", ncol(trainingPtype)))
 
       #Store the data in your lists.
       #_______________________________________________________________

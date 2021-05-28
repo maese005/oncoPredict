@@ -31,6 +31,11 @@ homogenizeData(
 \value{
 A list containing two entries $train and $test, which are the homogenized input matrices.
 }
+\examples{
+\donttest{
+try(homogenizeData(testExprMat,trainExprMat,batchCorrect = "eb",selection = -1,printOutput = TRUE))
+}
+}
 \description{
 This function takes two gene expression matrices (like trainExprMat and testExprMat) and returns homogenized versions of the matrices by employing the homogenization method specified.
 By default, the Combat method from the sva library is used.

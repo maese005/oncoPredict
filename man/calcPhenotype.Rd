@@ -68,6 +68,25 @@ This function predicts a phenotype (drug sensitivity score) when provided with m
 The imputations are performed using ridge regression, training on a gene expression matrix where phenotype is already known.
 This function integrates training and testing datasets via a user-defined procedure, and power transforming the known phenotype.
 }
+\examples{
+\donttest{
+try(calcPhenotype(trainingExprData=trainingExprData,
+trainingPtype=trainingPtype,
+testExprData=testExprData,
+batchCorrect=batchCorrect,
+powerTransformPhenotype=powerTransformPhenotype,
+removeLowVaryingGenes=removeLowVaryingGenes,
+minNumSamples=minNumSamples,
+selection=selection,
+printOutput=printOutput,
+pcr=pcr,
+removeLowVaringGenesFrom=removeLowVaringGenesFrom,
+report_pc=report_pc,
+cc=cc,
+percent=percent,
+rsq=rsq))
+}
+}
 \keyword{and}
 \keyword{drug}
 \keyword{phenotype}

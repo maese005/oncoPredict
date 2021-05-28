@@ -15,6 +15,7 @@ knitr::opts_chunk$set(
 ```
 
 ```{r setup}
+
 library(oncoPredict)
 
 #This script provides an example of how to use calcPhenotype() for drug response prediction as well as its optional #parameters. 
@@ -121,6 +122,9 @@ percent=80
 
 #Run the calcPhenotype() function using the parameters you specified above.
 #__________________________________________________________________________________________________________________________________
+wd<-tempdir()
+savedir<-setwd(wd)
+
 calcPhenotype(trainingExprData=trainingExprData,
               trainingPtype=trainingPtype,
               testExprData=testExprData,

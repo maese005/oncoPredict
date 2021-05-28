@@ -10,7 +10,7 @@
 #'@export
 completeMatrix <- function(senMat, nPerms=50)
 {
-  cat("\nNumber of iterations:")
+  message("\nNumber of iterations:")
   #To initialize the algorithm, all missing values are first imputed to the median.
   numCellLinesNotScreened <- apply(senMat, 2, function(r)return(sum(is.na(r))))
   numDrugsNotScreened <- apply(senMat, 1, function(r)return(sum(is.na(r))))
@@ -90,10 +90,10 @@ completeMatrix <- function(senMat, nPerms=50)
     close(pb)
     imputeSortList[[j + 1]] <- hundIc50sImputeSort
     medianDistance[j] <- mean(as.numeric(imputeSortList[[j]]) - as.numeric(imputeSortList[[j + 1]])) #Estimate A (the sum of the total difference between each of the elements of X and X').
-    cat(paste("\nIteration: ", j, "\n"), "")
+    message(paste("\nIteration: ", j, "\n"), "")
     #plot(medianDistance, main=j, ylab="Median Distance from previous imputed matrix")
   }
-  cat("\nDone\n")
+  message("\nDone\n")
 
   write.table(hundIc50sImputeSort[,colnames(senMat)], file='./complete_matrix_output.txt')
 
@@ -139,7 +139,7 @@ glds <- function(drugMat, drugRelatedness, markerMat, minMuts=5, additionalCovar
     index<-try(match(colnames(drugMat)[i], drugRelatedness[,1]), silent=TRUE)
     if (is.na(index)){
       drugMat = drugMat[,-i] #Remove that column/drug from the matrix.
-      cat(paste('\n', colnames(drugMat)[i], 'is skipped because it is not included in your drug relatedness info'))
+      message(paste('\n', colnames(drugMat)[i], 'is skipped because it is not included in your drug relatedness info'))
     }else{
       #Calculate 10 PCs on non-related sets of drugs....
       categoryThisDrug<-(drugRelatedness[,2])[index] #The MOA of the drug under scrutiny.

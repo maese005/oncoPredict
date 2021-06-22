@@ -27,7 +27,7 @@ calcPhenotype(
 \arguments{
 \item{trainingExprData}{The training data. A matrix of expression levels. rownames() are genes, colnames() are samples (cell line names or cosmic ides, etc.). rownames() must be specified and must contain the same type of gene ids as "testExprData"}
 
-\item{trainingPtype}{The known phenotype for "trainingExprData". This data must be a matrix of drugs/rows x cell lines/columns or cosmic ids/columns. This matrix can contain NA values, that is ok (they are removed in the calcPhenotype() function).}
+\item{trainingPtype}{The known phenotype for "trainingExprData". This data must be a matrix of cell lines/rows or cosmic ids/rows x drugs/columns. This matrix can contain NA values, that is ok (they are removed in the calcPhenotype() function).}
 
 \item{testExprData}{The test data where the phenotype will be estimated. It is a matrix of expression levels, rows contain genes and columns contain samples, "rownames()" must be specified and must contain the same type of gene ids as "trainingExprData".}
 

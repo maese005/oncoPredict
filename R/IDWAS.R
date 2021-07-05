@@ -273,7 +273,6 @@ idwas<-function(drug_prediction, data, n=10, cnv)
 
       #If there are multiple genes, commonlyMutated will have dimensions.
       #Otherwise, it will be a vector.
-      dim(commonlyMutated)
       #_______________________________________
       dim<-try(dim(as.vector(unlist(commonlyMutated))), silent=TRUE)
       if(length(dim)){ #If we have a vector (one gene)...

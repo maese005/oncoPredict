@@ -412,6 +412,7 @@ idwas<-function(drug_prediction, data, n=10, cnv){
         write.csv(pVals, file='./CnvTestOutput_pVals.csv')
         write.csv(betas, file='./CnvTestOutput_betas.csv')
       }
+      
     }else{ #If non TCGA Mut...
       
       drug_prediction<-t(drug_prediction)
@@ -480,11 +481,16 @@ idwas<-function(drug_prediction, data, n=10, cnv){
       commonlyMutated <- mutMat_nodups_ordFilt[which(commonMuts >= n), ]
       #NOTE: commonlyMutated will become a vector if there is only one mut that is >=n
       
+      #dim(commonlyMutated) #3 208...genes/muts by samples. 
+      #rownames(commonlyMutated)
+      #length(commonlyMutated)
+      
       #If there are multiple genes, commonlyMutated will have dimensions.
-      #Otherwise, it will be a vector.
+      #Otherwise, it will be a vector, and you can calculate the length. 
       #_______________________________________
-      length<-try(length(as.vector(unlist(commonlyMutated))), silent=TRUE) #If commonlyMutated is not a vector...(if there are multiple )
-      if(length >0){ #If we have a vector (one gene)...
+      #length<-try(length(as.vector(unlist(commonlyMutated))), silent=TRUE) #If commonlyMutated is not a vector...(if there are multiple )
+      nrow=try(nrow(commonlyMutated))
+      if(is.null(nrow)){ #If we have a vector (one gene)...
         #Get p values and beta values.
         pValList <- list()
         betaValList <- list()
@@ -524,12 +530,12 @@ idwas<-function(drug_prediction, data, n=10, cnv){
         betaValList <- list()
         #dim(drug_prediction_filt_ord) #samples by drugs.
         
-        suppressWarnings(for(i in 1:nrow(drug_prediction_filt_ord)){ #For each drug...
+        suppressWarnings(for(i in 1:ncol(drug_prediction_filt_ord)){ #For each drug...drug_prediction_filt_ord is samples/rows and drugs/columns. 208 11
           pValList[[i]] <- numeric()
           betaValList[[i]] <- numeric()
-          for(j in 1:nrow(commonlyMutated))
+          for(j in 1:nrow(commonlyMutated)) #For each mut gene...commonlyMutated is mut genes/rows and samples/columns.3 208
           {
-            thecoefs <- coef(summary(lm(drug_prediction_filt_ord[i,]~commonlyMutated[j,])))
+            thecoefs <- coef(summary(lm(drug_prediction_filt_ord[,i]~commonlyMutated[j,])))
             pValList[[i]][[j]] <- thecoefs[2,4]
             betaValList[[i]][[j]] <- thecoefs[2,1]
           }
@@ -559,7 +565,8 @@ idwas<-function(drug_prediction, data, n=10, cnv){
       betaVal<-unlist(betaValList)
       
       #If you only have one gene of interest...make sure the row names are appropriate (drug:gene)
-      if(length >0){ #If we have a vector (one gene)...
+      nrow=try(nrow(commonlyMutated))
+      if(is.null(nrow)){ #If we have a vector (one gene)...
         final_data<-cbind(pVal, betaVal)
         rows<-rownames(final_data)
         gene<-names(which(commonMuts >= n))

@@ -561,20 +561,39 @@ idwas<-function(drug_prediction, data, n=10, cnv){
       names(betaValList) <- colnames(drug_prediction_filt_ord)
       names(pAdjListCantype) <- colnames(drug_prediction_filt_ord)
       
-      pVal<-unlist(pValList)
-      betaVal<-unlist(betaValList)
-      
       #If you only have one gene of interest...make sure the row names are appropriate (drug:gene)
       nrow=try(nrow(commonlyMutated))
       if(is.null(nrow)){ #If we have a vector (one gene)...
+        
+        pVal<-unlist(pValList)
+        betaVal<-unlist(betaValList)
+        
         final_data<-cbind(pVal, betaVal)
         rows<-rownames(final_data)
         gene<-names(which(commonMuts >= n))
         final_rows<-paste(rows, ':', gene, sep='')
         rownames(final_data)<-final_rows
         write.csv(final_data, file='./MutationTestOutput_pVal_and_betaVal.csv')
+        
       }else{
-        write.csv(cbind(pVal, betaVal), file='./MutationTestOutput_pVal_and_betaVal.csv')
+        
+        drugs=names(pValList)
+        genes=names(which(commonMuts >= n))
+        genes=paste(genes, ":", sep="")
+        mut_drug<-do.call(paste0,expand.grid(genes,drugs))
+        pvalues=as.vector(unlist(pValList)) #All p values as a vector. 
+        #names(pvalues)=v1
+        
+        drugs=names(betaValList)
+        genes=names(which(commonMuts >= n))
+        genes=paste(genes, ":", sep="")
+        #mut_drug<-do.call(paste0,expand.grid(genes,drugs))
+        betavalues=as.vector(unlist(betaValList)) #All p values as a vector.
+        
+        df=data.frame(pvalues, betavalues)
+        rownames(df)<-mut_drug
+        
+        write.csv(df, file='./MutationTestOutput_pVal_and_betaVal.csv')
       }
     }
   }

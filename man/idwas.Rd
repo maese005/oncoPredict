@@ -16,7 +16,7 @@ idwas(drug_prediction, data, n = 10, cnv)
 \item{cnv}{TRUE or FALSE. Indicate whether or not you would like to test cnv data. If TRUE, you will test cnv data. If FALSE, you will test mutation data.}
 }
 \value{
-p-value and beta-values for cnv and somatic mutations.
+Raw p-value and beta-values for cnv and somatic mutations.
 }
 \examples{
 \donttest{

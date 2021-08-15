@@ -98,7 +98,7 @@ map_cnv<-function(Cnvs)
 #'@import stats
 #'@import ridge
 #'@import parallel
-#'@return p-value and beta-values for cnv and somatic mutations.
+#'@return Raw p-value and beta-values for cnv and somatic mutations.
 #'@export
 idwas<-function(drug_prediction, data, n=10, cnv){
   #Check parameters.

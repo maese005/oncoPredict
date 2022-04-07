@@ -5,6 +5,7 @@ An R package for drug response prediction and drug-gene association prediction. 
  *  For drug response prediction, use **calcPhenotype**. 
  *  For pre-clinical biomarker discovery, use **GLDS**. 
  * For clinical biomarker discovery, use **IDWAS** (for CNV or somatic mutation association with drug response) or indicate **cc=TRUE** (for gene expression association with drug response) in calcPhenotype(). 
+ * The link to updated training data is found at [depmap](https://depmap.org/portal/download/)
  
 ## R <h2>
  * This directory contains all the R functions included in this package. 

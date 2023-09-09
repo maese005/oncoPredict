@@ -1,6 +1,8 @@
 # oncoPredict 
 (Predict Response from Expression Data and Identify Cell line/Clinical Targets and Trends)
 
+Please note: this repo has moved to https://github.com/HuangLabUMN/oncoPredict/
+
 An R package for drug response prediction and drug-gene association prediction. The prepared GDSC and CTRP matrices for the calcPhenotype() are located in the oncoPredict OSF.
  *  For drug response prediction, use **calcPhenotype**. 
  *  For pre-clinical biomarker discovery, use **GLDS**. 
